@@ -1,0 +1,11 @@
+<h1>TV</h1>
+<ul>
+    <li *ngFor="let player of players">
+        <span>{{player.intials}}</span>
+        <span class="ml-4">{{player.ready ? '&#10003;' : 'x'}}</span>
+    </li>
+</ul>
+
+<p *ngIf="isCountdownVisible">
+    Game starting in {{countdownTime}}
+</p>

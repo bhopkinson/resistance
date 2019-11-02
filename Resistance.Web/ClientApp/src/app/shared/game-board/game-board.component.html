@@ -1,0 +1,21 @@
+<div class="mission-circles">
+    <span class="mission-circle"
+        [class.mission-circle--pass]="mission.state === MissionState.Pass"
+        [class.mission-circle--fail]="mission.state === MissionState.Fail"
+        [class.mission-circle--current]="mission.state === MissionState.Current"
+        [class.mission-circle--future]="mission.state === MissionState.Future"
+        *ngFor="let mission of missions">
+        <span class="mission-circle-text"
+              *ngIf="getShowMissionSize(mission)"
+              >{{mission.numberOfPlayers}}</span>
+        <span class="mission-circle-twostar"
+              *ngIf="getShowMissionSize(mission) && mission.failsRequired === 2">**</span>
+    </span>
+</div>
+<div class="vote-circles">
+    <span class="vote-circle" [class.vote-circle--current]="voteCount === 1"></span>
+    <span class="vote-circle" [class.vote-circle--current]="voteCount === 2"></span>
+    <span class="vote-circle" [class.vote-circle--current]="voteCount === 3"></span>
+    <span class="vote-circle" [class.vote-circle--current]="voteCount === 4"></span>
+    <span class="vote-circle" [class.vote-circle--current]="voteCount === 5"></span>
+</div>
