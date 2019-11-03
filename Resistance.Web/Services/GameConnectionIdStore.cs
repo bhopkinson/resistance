@@ -1,15 +1,17 @@
-﻿using Resistance.Web.Hubs.Models;
+﻿using Resistance.Web.Hubs.RequestModels;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Resistance.Web.Services
 {
-    public class ConnectionManager
+    public class GameConnectionIdStore : IGameConnectionIdStore
     {
-        private static readonly ConcurrentDictionary<GamePlayer, string> _gamePlayerToConnectionIds = new ConcurrentDictionary<GamePlayer, string>();
+        private readonly ConcurrentDictionary<GamePlayer, string> _gamePlayerToConnectionIds;
+
+        public GameConnectionIdStore()
+        {
+            _gamePlayerToConnectionIds = new ConcurrentDictionary<GamePlayer, string>();
+        }
 
         public string GetConnectionId(GamePlayer gamePlayer)
         {

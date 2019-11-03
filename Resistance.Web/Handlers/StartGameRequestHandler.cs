@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using MediatR;
 using Resistance.Web.Dispatchers.Models;
 using Resistance.Web.Handlers.RequestModels;
-using Resistance.Web.Hubs.Models;
+using Resistance.Web.Hubs.RequestModels;
+using Resistance.Web.Hubs.ResponseModels;
 using Resistance.Web.Models.enums;
 using Resistance.Web.Services;
 
@@ -31,20 +32,20 @@ namespace Resistance.Web.Handlers
         }
         public async Task<Response> Handle(StartGameRequest request, CancellationToken cancellationToken)
         {
-            var gameReady = request.GameState.Players.All(o => o.Value.Ready);
+            var gameReady = request.Game.Players.All(o => o.Value.Ready);
 
             if (!gameReady)
             {
                 return new Response(false, "Not all players are ready.");
             }
 
-            request.GameState.CurrentState = GameState.Started;
-            foreach (var playerReset in request.GameState.Players)
+            request.Game.CurrentState = GameState.Started;
+            foreach (var playerReset in request.Game.Players)
             {
                 playerReset.Value.Ready = false;
             }
 
-            var players = request.GameState.Players.Values.ToList();
+            var players = request.Game.Players.Values.ToList();
 
             _characterAssignment.AssignRoles(players);
 
@@ -66,11 +67,11 @@ namespace Resistance.Web.Handlers
                 await _mediator.Publish(playerCharacterNotification);
             }
 
-            request.GameState.SortedPlayers = _playerOrderInitialisation.GetSortedPlayers(players);
-            request.GameState.Missions = _missionInitialisation.InitiliseMissions(players.Count);
+            request.Game.SortedPlayers = _playerOrderInitialisation.GetSortedPlayers(players);
+            request.Game.Missions = _missionInitialisation.InitiliseMissions(players.Count);
 
-            var firstMission = request.GameState.Missions.Where(o => o.Number == 1).SingleOrDefault();
-            firstMission.Team.Leader = request.GameState.SortedPlayers.First();
+            var firstMission = request.Game.Missions.Where(o => o.Number == 1).SingleOrDefault();
+            firstMission.Team.Leader = request.Game.SortedPlayers.First();
 
             //TODO broadcast mission update
 

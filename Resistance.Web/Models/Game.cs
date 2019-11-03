@@ -4,18 +4,18 @@ using System.Collections.Generic;
 
 namespace Resistance.Web.Models
 {
-    public class GameOverview
+    public class Game
     {
-        public GameOverview(string gameId)
+        public Game(string code)
         {
-            Id = gameId;
+            Code = code;
             Players = new ConcurrentDictionary<string, Player>();
             SortedPlayers = new SortedSet<Player>();
             Missions = new List<Mission>();
             CurrentState = GameState.GamePending;
         }
 
-        public string Id { get; set; }
+        public string Code { get; set; }
         public ConcurrentDictionary<string, Player> Players { get; set; }
         public SortedSet<Player> SortedPlayers { get; set; }
         public IEnumerable<Mission> Missions { get; set; }

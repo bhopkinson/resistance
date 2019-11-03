@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Resistance.Web.Hubs.Models
+﻿namespace Resistance.Web.Hubs.ResponseModels
 {
     public class PlayerDetails
     {

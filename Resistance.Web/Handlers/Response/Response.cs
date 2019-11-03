@@ -1,12 +1,8 @@
-﻿namespace Resistance.Web.Hubs.Models
+﻿namespace Resistance.Web.Handlers.Responses
 {
     public class Response
     {
-        public Response()
-        {
-        }
-
-        public Response(bool success, string errorMessage = null)
+        public Response(bool success = true, string errorMessage = null)
         {
             Success = success;
             ErrorMessage = errorMessage;

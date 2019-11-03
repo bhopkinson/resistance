@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using Resistance.Web.Handlers.RequestModels;
-using Resistance.Web.Hubs.Models;
+using Resistance.Web.Dispatchers.Models;
 
 namespace Resistance.Web
 {

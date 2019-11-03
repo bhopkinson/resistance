@@ -40,8 +40,15 @@ namespace Resistance.Web
 
             });
 
-            services.AddSingleton<IGameStateManager, GameStateManager>();
-            services.AddSingleton<ConnectionManager>();
+            services
+                .AddTransient<ICodeGenerator, CodeGenerator>()
+                .AddTransient<ICharacterAssignment, CharacterAssignment>()
+                .AddTransient<IMissionInitialisation, MissionInitialisation>()
+                .AddTransient<IPlayerOrderInitialisation, PlayerOrderInitialisation>();
+
+            services
+                .AddSingleton<IGameManager, GameManager>()
+                .AddSingleton<IGameConnectionIdStore, GameConnectionIdStore>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
@@ -49,11 +56,6 @@ namespace Resistance.Web
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-
-            services
-                .AddTransient<ICharacterAssignment, CharacterAssignment>()
-                .AddTransient<IMissionInitialisation, MissionInitialisation>()
-                .AddTransient<IPlayerOrderInitialisation, PlayerOrderInitialisation>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

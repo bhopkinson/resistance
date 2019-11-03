@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using Resistance.Web.Dispatchers.Models;
-using Resistance.Web.Handlers.RequestModels;
-using Resistance.Web.Hubs.Models;
+using Resistance.Web.Handlers.Requests;
+using Resistance.Web.Handlers.Responses;
 using Resistance.Web.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +23,7 @@ namespace Resistance.Web.Handlers
 
         public async Task<Response> Handle(JoinGameRequest request, CancellationToken cancellationToken)
         {
-            var game = request.GameState;
+            var game = request.Game;
 
             var player = new Player()
             {
@@ -37,7 +35,7 @@ namespace Resistance.Web.Handlers
             var response = new Response(success, message);
 
             // TODO: refactor into own handler
-            var playerDetails = request.GameState.Players.Values
+            var playerDetails = request.Game.Players.Values
                 .Select(p => new Dispatchers.Models.PlayerDetails { Intials = p.Initials, Ready = p.Ready })
                 .ToList();
             var playersListNotification = new PlayersListNotification() { Players = playerDetails };

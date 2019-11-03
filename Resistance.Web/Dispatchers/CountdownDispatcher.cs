@@ -13,7 +13,7 @@ namespace Resistance.Web.Dispatchers
 {
     public class CountdownDispatcher : BaseDispatcher, INotificationHandler<CountdownNotifcation>
     {
-        public CountdownDispatcher(IHubContext<GameHub, IGameHubClient> gameHubContext, ConnectionManager connectionManger)
+        public CountdownDispatcher(IHubContext<GameHub, IGameHubClient> gameHubContext, IGameConnectionIdStore connectionManger)
             : base(gameHubContext, connectionManger)
         {
         }
