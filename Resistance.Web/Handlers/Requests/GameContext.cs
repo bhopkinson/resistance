@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Resistance.Web.Handlers.Responses;
 using Resistance.Web.Hubs.ResponseModels;
 using Resistance.Web.Models;
 

@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Resistance.Web.Dispatchers.Models;
-using Resistance.Web.Handlers.RequestModels;
+using Resistance.Web.Handlers.Requests;
+using Resistance.Web.Handlers.Responses;
 using Resistance.Web.Hubs.RequestModels;
-using Resistance.Web.Hubs.ResponseModels;
 using Resistance.Web.Models.enums;
 using Resistance.Web.Services;
 

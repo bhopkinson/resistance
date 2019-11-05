@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
-using Resistance.Web.Handlers.RequestModels;
+using Resistance.Web.Handlers.Requests;
+using Resistance.Web.Handlers.Responses;
 using Resistance.Web.Hubs.RequestModels;
-using Resistance.Web.Hubs.ResponseModels;
 using Resistance.Web.Services;
 using System.Threading.Tasks;
 
