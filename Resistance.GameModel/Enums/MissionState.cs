@@ -1,4 +1,4 @@
-﻿namespace Resistance.Web.Models.enums
+﻿namespace Resistance.GameModel.enums
 {
     public enum MissionState
     {

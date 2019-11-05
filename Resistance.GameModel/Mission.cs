@@ -1,7 +1,7 @@
-﻿using Resistance.Web.Models.enums;
+﻿using Resistance.GameModel.enums;
 using System.Collections.Generic;
 
-namespace Resistance.Web.Models
+namespace Resistance.GameModel
 {
     public class Mission
     {

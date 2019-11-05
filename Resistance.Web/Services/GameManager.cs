@@ -1,4 +1,4 @@
-﻿using Resistance.Web.Models;
+﻿using Resistance.GameModel;
 using System;
 using System.Collections.Concurrent;
 

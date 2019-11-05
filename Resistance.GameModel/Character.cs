@@ -1,6 +1,6 @@
-﻿using Resistance.Web.Models.enums;
+﻿using Resistance.GameModel.enums;
 
-namespace Resistance.Web.Models
+namespace Resistance.GameModel
 {
     public class Character
     {

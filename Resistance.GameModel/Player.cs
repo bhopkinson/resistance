@@ -1,4 +1,4 @@
-﻿namespace Resistance.Web.Models
+﻿namespace Resistance.GameModel
 {
     public class Player
     {

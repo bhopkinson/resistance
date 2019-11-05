@@ -1,5 +1,5 @@
-﻿using Resistance.Web.Models;
-using Resistance.Web.Models.enums;
+﻿using Resistance.GameModel;
+using Resistance.GameModel.enums;
 
 namespace Resistance.Web.Dispatchers.Models
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Resistance.Web.Models
+namespace Resistance.GameModel
 {
     public class MissionTeam
     {

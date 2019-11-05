@@ -1,4 +1,4 @@
-﻿using Resistance.Web.Models;
+﻿using Resistance.GameModel;
 using System.Collections.Generic;
 
 namespace Resistance.Web.Services
