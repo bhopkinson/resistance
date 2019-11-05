@@ -7,7 +7,7 @@ namespace Resistance.Web.Services
     {
         private const int Length = 4;
         private readonly Random _random = new Random();
-        private readonly string _chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+        private readonly string _chars = "0123456789";
 
         public string GetCode()
             => new string(
@@ -15,7 +15,7 @@ namespace Resistance.Web.Services
                 .Select(o => GetChar())
                 .ToArray());
         
-        private char GetChar()
+         private char GetChar()
             => _chars[_random.Next(_chars.Length)];
     }
 }

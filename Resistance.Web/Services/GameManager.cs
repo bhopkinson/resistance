@@ -1,10 +1,12 @@
 ﻿using Resistance.Web.Models;
+using System;
+using System.Collections.Concurrent;
 
 namespace Resistance.Web.Services
 {
     public class GameManager : IGameManager
     {
-        private static Game _game;
+        private readonly ConcurrentDictionary<string, Game> _games;
         private readonly ICodeGenerator _gameCodeGenerator;
 
         public GameManager(ICodeGenerator gameCodeGenerator)
@@ -14,16 +16,28 @@ namespace Resistance.Web.Services
 
         public string CreateGame()
         {
-            var code = _gameCodeGenerator.GetCode();
+            var game = new Game();
+            string code;
 
-            _game = new Game(code);
+            do
+            {
+                code = _gameCodeGenerator.GetCode();
+            }
+            while (!_games.TryAdd(code, game));
 
             return code;
         }
 
-        public Game GetGame(string gameId)
+        public Game GetGame(string gameCode)
         {
-            return _game;
+            if (_games.TryGetValue(gameCode, out var game))
+            {
+                return game;
+            }
+            else
+            {
+                throw new Exception("Game not found.");
+            }
         }
     }
 }
