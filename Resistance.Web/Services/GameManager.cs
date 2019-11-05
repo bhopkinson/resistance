@@ -11,6 +11,7 @@ namespace Resistance.Web.Services
 
         public GameManager(ICodeGenerator gameCodeGenerator)
         {
+            _games = new ConcurrentDictionary<string, Game>();
             _gameCodeGenerator = gameCodeGenerator;
         }
 
