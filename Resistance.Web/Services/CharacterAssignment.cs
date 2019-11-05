@@ -1,6 +1,6 @@
 ﻿using Resistance.Web.ExtentionMethods;
-using Resistance.GameModel;
-using Resistance.GameModel.enums;
+using Resistance.GameModels;
+using Resistance.GameModels.enums;
 using System.Collections.Generic;
 using System.Linq;
 

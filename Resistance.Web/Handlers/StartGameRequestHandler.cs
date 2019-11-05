@@ -7,7 +7,7 @@ using Resistance.Web.Dispatchers.Models;
 using Resistance.Web.Handlers.Requests;
 using Resistance.Web.Handlers.Responses;
 using Resistance.Web.Hubs.RequestModels;
-using Resistance.GameModel.enums;
+using Resistance.GameModels.enums;
 using Resistance.Web.Services;
 
 namespace Resistance.Web.Handlers

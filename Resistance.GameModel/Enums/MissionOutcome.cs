@@ -1,4 +1,4 @@
-﻿namespace Resistance.GameModel.enums
+﻿namespace Resistance.GameModels.enums
 {
     public enum MissionOutcome
     {

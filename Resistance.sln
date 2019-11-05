@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resistance.Web", "Resistance.Web\Resistance.Web.csproj", "{596B9C2E-0FD9-44D5-92F9-0E8F998FA997}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resistance.GameModel", "Resistance.GameModel\Resistance.GameModel.csproj", "{9BE046A4-4075-42F5-9081-4C96DF3B4E30}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resistance.GameModels", "Resistance.GameModel\Resistance.GameModels.csproj", "{9BE046A4-4075-42F5-9081-4C96DF3B4E30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

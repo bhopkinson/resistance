@@ -1,4 +1,4 @@
-﻿namespace Resistance.GameModel
+﻿namespace Resistance.GameModels
 {
     public class Vote
     {

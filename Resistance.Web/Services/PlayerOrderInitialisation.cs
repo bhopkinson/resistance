@@ -1,5 +1,5 @@
 ﻿using Resistance.Web.ExtentionMethods;
-using Resistance.GameModel;
+using Resistance.GameModels;
 using System.Collections.Generic;
 
 namespace Resistance.Web.Services

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Resistance.Web.Handlers.Responses;
 using Resistance.Web.Hubs.ResponseModels;
-using Resistance.GameModel;
+using Resistance.GameModels;
 
 namespace Resistance.Web.Handlers.Requests
 {

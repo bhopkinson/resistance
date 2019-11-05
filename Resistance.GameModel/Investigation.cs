@@ -1,10 +1,10 @@
-﻿using Resistance.GameModel.enums;
+﻿using Resistance.GameModels.enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Resistance.GameModel
+namespace Resistance.GameModels
 {
     public class Investigation
     {

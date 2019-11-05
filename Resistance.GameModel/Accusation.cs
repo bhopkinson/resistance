@@ -1,6 +1,6 @@
-﻿using Resistance.GameModel.enums;
+﻿using Resistance.GameModels.enums;
 
-namespace Resistance.GameModel
+namespace Resistance.GameModels
 {
     public class Accusation
     {
