@@ -103,7 +103,6 @@ export class GameService {
             this._players.next(players);
         });
         this._hubConnection.on('Countdown', (started: boolean) => {
-            console.log('cats');
             this._countdown.next(started);
         });
         this._hubConnection.on('GameBoardChange', (gameBoard: GameBoard) => {
