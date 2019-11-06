@@ -1,13 +1,15 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using MediatR.Pipeline;
 using Resistance.Web.Handlers.Requests;
+using Resistance.Web.Handlers.Responses;
 using Resistance.Web.Services;
 
 namespace Resistance.Web.Handlers
 {
     public class GameContextPreProcessor<T> : IRequestPreProcessor<T>
-        where T : GameContext
+        where T : IRequest<Response>
     {
         IGameManager _gameManager;
 
@@ -16,10 +18,14 @@ namespace Resistance.Web.Handlers
             _gameManager = gameManager;
         }
 
-        public async Task Process(T context, CancellationToken cancellationToken)
+        public async Task Process(T request, CancellationToken cancellationToken)
         {
-            var game = _gameManager.GetGame(context.GameCode);
-            context.Game = game;
+            if (request is BaseRequest)
+            {
+                var context = (request as BaseRequest).Context;
+                var game = _gameManager.GetGame(context.GameCode);
+                context.Game = game;
+            }
 
             await Task.CompletedTask;
         }

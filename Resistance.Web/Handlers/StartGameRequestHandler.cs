@@ -32,20 +32,21 @@ namespace Resistance.Web.Handlers
         }
         public async Task<Response> Handle(StartGameRequest request, CancellationToken cancellationToken)
         {
-            var gameReady = request.Game.Players.All(o => o.Value.Ready);
+            var context = request.Context;
+            var gameReady = context.Game.Players.All(o => o.Value.Ready);
 
             if (!gameReady)
             {
                 return new Response(false, "Not all players are ready.");
             }
 
-            request.Game.CurrentState = GameState.Started;
-            foreach (var playerReset in request.Game.Players)
+            context.Game.CurrentState = GameState.Started;
+            foreach (var playerReset in context.Game.Players)
             {
                 playerReset.Value.Ready = false;
             }
 
-            var players = request.Game.Players.Values.ToList();
+            var players = context.Game.Players.Values.ToList();
 
             _characterAssignment.AssignRoles(players);
 
@@ -67,11 +68,11 @@ namespace Resistance.Web.Handlers
                 await _mediator.Publish(playerCharacterNotification);
             }
 
-            request.Game.SortedPlayers = _playerOrderInitialisation.GetSortedPlayers(players);
-            request.Game.Missions = _missionInitialisation.InitiliseMissions(players.Count);
+            context.Game.SortedPlayers = _playerOrderInitialisation.GetSortedPlayers(players);
+            context.Game.Missions = _missionInitialisation.InitiliseMissions(players.Count);
 
-            var firstMission = request.Game.Missions.Where(o => o.Number == 1).SingleOrDefault();
-            firstMission.Team.Leader = request.Game.SortedPlayers.First();
+            var firstMission = context.Game.Missions.Where(o => o.Number == 1).SingleOrDefault();
+            firstMission.Team.Leader = context.Game.SortedPlayers.First();
 
             //TODO broadcast mission update
 

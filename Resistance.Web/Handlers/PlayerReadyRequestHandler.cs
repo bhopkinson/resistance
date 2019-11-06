@@ -23,23 +23,24 @@ namespace Resistance.Web.Handlers
 
         public async Task<Response> Handle(PlayerReadyRequest request, CancellationToken cancellationToken)
         {
-            var player = request.Game.Players
-                .Where(o => o.Key == request.PlayerIntials)
+            var context = request.Context;
+            var player = context.Game.Players
+                .Where(o => o.Key == context.PlayerIntials)
                 .SingleOrDefault()
                 .Value;
 
             player.Ready = request.Ready;
 
             //var playerDetails = _mapper.ProjectTo<Dispatchers.Models.PlayerDetails>(request.GameState.Players.Values.AsQueryable()).ToList();
-            var playerDetails = request.Game.Players.Values.Select(p => new Dispatchers.Models.PlayerDetails { Intials = p.Initials, Ready = p.Ready }).ToList();
+            var playerDetails = context.Game.Players.Values.Select(p => new Dispatchers.Models.PlayerDetails { Intials = p.Initials, Ready = p.Ready }).ToList();
             var playersListNotification = new PlayersListNotification() { Players = playerDetails };
             await _mediator.Publish(playersListNotification);
 
-            var allPlayersReady = request.Game.Players.All(o => o.Value.Ready);
+            var allPlayersReady = context.Game.Players.All(o => o.Value.Ready);
 
-            if (allPlayersReady && request.Game.Players.Count > 4 || request.Game.Players.Count == 1)
+            if (allPlayersReady && context.Game.Players.Count > 4 || context.Game.Players.Count == 1)
             {
-                if (request.Game.CurrentState == GameState.GamePending)
+                if (context.Game.CurrentState == GameState.GamePending)
                 {
                     var startCountDown = new CountdownNotifcation() { Countdown = true };
                     await _mediator.Publish(startCountDown);

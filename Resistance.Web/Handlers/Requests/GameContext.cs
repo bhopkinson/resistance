@@ -1,11 +1,8 @@
-﻿using MediatR;
-using Resistance.Web.Handlers.Responses;
-using Resistance.Web.Hubs.ResponseModels;
-using Resistance.GameModels;
+﻿using Resistance.GameModels;
 
 namespace Resistance.Web.Handlers.Requests
 {
-    public abstract class GameContext : IRequest<Response>
+    public class GameContext
     {
         public string GameCode { get; set; }
         public string PlayerIntials { get; set; }

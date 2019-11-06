@@ -30,7 +30,7 @@ namespace Resistance.Web.Hubs
         public async Task<Response> PlayerReady(bool ready)
         {
             var request = new PlayerReadyRequest { Ready = ready } ;
-            PopulateRequestContextFromHubContext(request);
+            PopulateRequestContextFromHubContext(request.Context);
             return await _mediator.Send(request);
         }
 
@@ -38,8 +38,11 @@ namespace Resistance.Web.Hubs
         {
             var request = new JoinGameRequest
             {
-                PlayerIntials = player.PlayerInitials,
-                GameCode = player.GameId
+                Context = new GameContext
+                {
+                    PlayerIntials = player.PlayerInitials,
+                    GameCode = player.GameId
+                }
             };
 
             var response = await _mediator.Send(request);
