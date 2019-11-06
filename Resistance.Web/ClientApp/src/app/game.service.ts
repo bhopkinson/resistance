@@ -22,7 +22,7 @@ export class GameService {
     private _players = new ReplaySubject<PlayerDetails[]>();
     private _gameBoard = new Subject<GameBoard>();
     private _showLeaderScript = new Subject<boolean>();
-    private _characterAssigned = new Subject<boolean>();
+    private _characterAssigned = new ReplaySubject<boolean>(1);
 
     public messageReceived = this._messageReceived.asObservable();
     public connectionEstablished = this._connectionEstablished.asObservable();
@@ -109,7 +109,7 @@ export class GameService {
             this._gameBoard.next(gameBoard);
             this.leader = gameBoard.Leader;
         });
-        this._hubConnection.on('ShowCharacter', (character: Character) => {
+        this._hubConnection.on('ShowCharacter', (character: Character) => {R
             this.character = character;
             this._characterAssigned.next(true);
             
