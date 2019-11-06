@@ -109,7 +109,7 @@ export class GameService {
             this._gameBoard.next(gameBoard);
             this.leader = gameBoard.Leader;
         });
-        this._hubConnection.on('ShowCharacter', (character: Character) => {R
+        this._hubConnection.on('ShowCharacter', (character: Character) => {
             this.character = character;
             this._characterAssigned.next(true);
             
