@@ -7,7 +7,7 @@ using Resistance.Web.Services;
 
 namespace Resistance.Web.Handlers
 {
-    public class CreateGameRequestHandler : IRequestHandler<CreateGameRequest, CreateGameResponse>
+    public class CreateGameRequestHandler : IRequestHandler<CreateGameRequest, Response>
     {
         private IGameManager _gameManager;
 
@@ -16,7 +16,7 @@ namespace Resistance.Web.Handlers
             _gameManager = gameManager;
         }
 
-        public async Task<CreateGameResponse> Handle(CreateGameRequest request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(CreateGameRequest request, CancellationToken cancellationToken)
         {
             var code = _gameManager.CreateGame();
 

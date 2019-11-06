@@ -1,6 +1,7 @@
 ﻿using Resistance.GameModels;
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 
 namespace Resistance.Web.Services
 {
@@ -31,6 +32,9 @@ namespace Resistance.Web.Services
 
         public Game GetGame(string gameCode)
         {
+            // Currently just get single game
+            return _games.Values.FirstOrDefault();
+
             if (_games.TryGetValue(gameCode, out var game))
             {
                 return game;

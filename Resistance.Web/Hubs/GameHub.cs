@@ -22,7 +22,7 @@ namespace Resistance.Web.Hubs
             _connectionManager = connectionManager;
         }
 
-        public async Task<CreateGameResponse> CreateGame()
+        public async Task<Response> CreateGame()
         {
             return await _mediator.Send(new CreateGameRequest());
         }
