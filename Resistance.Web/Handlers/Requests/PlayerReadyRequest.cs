@@ -1,6 +1,6 @@
 ﻿namespace Resistance.Web.Handlers.Requests
 {
-    public class PlayerReadyRequest : GameContext
+    public class PlayerReadyRequest : BaseRequest
     {
         public bool Ready { get; set; }
     }

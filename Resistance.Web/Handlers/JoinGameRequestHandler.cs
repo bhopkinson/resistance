@@ -23,11 +23,12 @@ namespace Resistance.Web.Handlers
 
         public async Task<Response> Handle(JoinGameRequest request, CancellationToken cancellationToken)
         {
-            var game = request.Game;
+            var context = request.Context;
+            var game = context.Game;
 
             var player = new Player()
             {
-                Initials = request.PlayerIntials
+                Initials = context.PlayerIntials
             };
 
             var success = game.Players.TryAdd(player.Initials, player);
@@ -35,8 +36,8 @@ namespace Resistance.Web.Handlers
             var response = new Response(success, message);
 
             // TODO: refactor into own handler
-            var playerDetails = request.Game.Players.Values
-                .Select(p => new Dispatchers.Models.PlayerDetails { Intials = p.Initials, Ready = p.Ready })
+            var playerDetails = context.Game.Players.Values
+                .Select(p => new PlayerDetails { Intials = p.Initials, Ready = p.Ready })
                 .ToList();
             var playersListNotification = new PlayersListNotification() { Players = playerDetails };
             await _mediator.Publish(playersListNotification);
