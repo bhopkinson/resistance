@@ -2,7 +2,7 @@
 
 namespace Resistance.Web.Dispatchers.Models
 {
-    public class CountdownNotifcation : INotification
+    public class CountdownNotifcation : IRequest
     {
         public bool Countdown { get; set; }
     }

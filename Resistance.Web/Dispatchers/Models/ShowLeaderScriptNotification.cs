@@ -2,7 +2,7 @@
 
 namespace Resistance.Web.Dispatchers.Models
 {
-    public class ShowLeaderScriptNotification : INotification
+    public class ShowLeaderScriptNotification : IRequest
     {
         public bool ShowScript { get; set; }
     }

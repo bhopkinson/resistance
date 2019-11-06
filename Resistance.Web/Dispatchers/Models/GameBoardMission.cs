@@ -2,7 +2,7 @@ using MediatR;
 
 namespace Resistance.Web.Dispatchers.Models
 {
-    public class GameBoardMission : INotification
+    public class GameBoardMission : IRequest
     {
         public MissionState State { get; set; }
         public int FailsRequired { get; set; }
