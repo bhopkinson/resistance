@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using MediatR;
 using Resistance.Web.Dispatchers.Models;
-using Resistance.Web.Handlers.RequestModels;
-using Resistance.Web.Hubs.Models;
-using Resistance.Web.Models.enums;
+using Resistance.Web.Handlers.Requests;
+using Resistance.Web.Handlers.Responses;
+using Resistance.GameModels.enums;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +23,7 @@ namespace Resistance.Web.Handlers
 
         public async Task<Response> Handle(PlayerReadyRequest request, CancellationToken cancellationToken)
         {
-            var player = request.GameState.Players
+            var player = request.Game.Players
                 .Where(o => o.Key == request.PlayerIntials)
                 .SingleOrDefault()
                 .Value;
@@ -32,15 +31,15 @@ namespace Resistance.Web.Handlers
             player.Ready = request.Ready;
 
             //var playerDetails = _mapper.ProjectTo<Dispatchers.Models.PlayerDetails>(request.GameState.Players.Values.AsQueryable()).ToList();
-            var playerDetails = request.GameState.Players.Values.Select(p => new Dispatchers.Models.PlayerDetails { Intials = p.Initials, Ready = p.Ready }).ToList();
+            var playerDetails = request.Game.Players.Values.Select(p => new Dispatchers.Models.PlayerDetails { Intials = p.Initials, Ready = p.Ready }).ToList();
             var playersListNotification = new PlayersListNotification() { Players = playerDetails };
             await _mediator.Publish(playersListNotification);
 
-            var allPlayersReady = request.GameState.Players.All(o => o.Value.Ready);
+            var allPlayersReady = request.Game.Players.All(o => o.Value.Ready);
 
-            if (allPlayersReady && request.GameState.Players.Count > 4 || request.GameState.Players.Count == 1)
+            if (allPlayersReady && request.Game.Players.Count > 4 || request.Game.Players.Count == 1)
             {
-                if (request.GameState.CurrentState == GameState.GamePending)
+                if (request.Game.CurrentState == GameState.GamePending)
                 {
                     var startCountDown = new CountdownNotifcation() { Countdown = true };
                     await _mediator.Publish(startCountDown);

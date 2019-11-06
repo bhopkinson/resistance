@@ -1,31 +1,40 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Resistance.Web.Handlers.RequestModels;
-using Resistance.Web.Hubs.Models;
+using Resistance.Web.Handlers.Requests;
+using Resistance.Web.Handlers.Responses;
 using Resistance.Web.Services;
 
 namespace Resistance.Web.Handlers
 {
     public class CreateGameRequestHandler : IRequestHandler<CreateGameRequest, Response>
     {
-        private IGameStateManager _gameStateManager;
+        private IGameManager _gameManager;
 
-        public CreateGameRequestHandler(IGameStateManager gameStateManager)
+        public CreateGameRequestHandler(IGameManager gameManager)
         {
-            _gameStateManager = gameStateManager;
+            _gameManager = gameManager;
         }
 
         public async Task<Response> Handle(CreateGameRequest request, CancellationToken cancellationToken)
         {
-            if (_gameStateManager.CreateGame() != null)
+            var code = _gameManager.CreateGame();
+
+            var response = new CreateGameResponse
             {
-                return await Task.FromResult(new Response(true));
+                GameCode = code
+            };
+
+            if (string.IsNullOrEmpty(code))
+            {
+                response.ErrorMessage = "Unable to create game.";
             }
             else
             {
-                return await Task.FromResult(new Response(false));
+                response.Success = true;
             }
+
+            return await Task.FromResult(response);
         }
     }
 }

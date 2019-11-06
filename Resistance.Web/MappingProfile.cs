@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Resistance.Web.Handlers.RequestModels;
-using Resistance.Web.Hubs.Models;
+using Resistance.GameModels;
+using Resistance.Web.Dispatchers.Models;
 
 namespace Resistance.Web
 {
@@ -8,7 +8,7 @@ namespace Resistance.Web
     {
         public MappingProfile()
         {
-            CreateMap<Models.Player, PlayerDetails>();
+            CreateMap<Player, PlayerDetails>();
         }
     }
 }

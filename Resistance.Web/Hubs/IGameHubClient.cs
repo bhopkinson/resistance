@@ -1,6 +1,6 @@
 ﻿using Resistance.Web.Dispatchers.Models;
-using Resistance.Web.Models;
-using Resistance.Web.Models.enums;
+using Resistance.GameModels;
+using Resistance.GameModels.enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

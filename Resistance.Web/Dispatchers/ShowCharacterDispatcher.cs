@@ -11,7 +11,7 @@ namespace Resistance.Web.Dispatchers
 {
     public class ShowCharacterDispatcher : BaseDispatcher, INotificationHandler<ShowCharacterNotification>
     {
-        public ShowCharacterDispatcher(IHubContext<GameHub, IGameHubClient> gameHubContext, ConnectionManager connectionManger)
+        public ShowCharacterDispatcher(IHubContext<GameHub, IGameHubClient> gameHubContext, IGameConnectionIdStore connectionManger)
             : base(gameHubContext, connectionManger)
         {
         }

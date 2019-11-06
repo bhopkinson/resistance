@@ -1,9 +1,6 @@
 ﻿using MediatR;
-using Resistance.Web.Hubs.Models;
-using System;
+using Resistance.Web.Hubs.RequestModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Resistance.Web.Dispatchers.Models
 {
