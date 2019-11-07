@@ -24,10 +24,17 @@ namespace Resistance.Web.Services
             throw new Exception($"ConnectionId not found for player ${playerId}.");
         }
 
-        public void StoreConnectionId(GamePlayer gamePlayer, string connectionId)
+        public void StoreConnectionId(string gameCode, string playerId, string connectionId)
         {
-            
-            _gameToPlayerToConnectionIds.TryAdd(gamePlayer, connectionId);
+            _ = _gameToPlayerToConnectionIds.AddOrUpdate(gameCode, new ConcurrentDictionary<string, string>(), (k, playerToConnectionIds) =>
+              {
+                  if (!playerToConnectionIds.TryAdd(playerId, connectionId))
+                  {
+                      throw new Exception($"Connection already stored for ${playerId} in game ${gameCode}.");
+                  }
+
+                  return playerToConnectionIds;
+              });
         }
 
         private ConcurrentDictionary<string, string> GetPlayerToConnectionIds(string gameCode)
