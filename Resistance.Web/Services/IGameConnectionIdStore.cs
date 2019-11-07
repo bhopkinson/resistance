@@ -1,11 +1,13 @@
-﻿using Resistance.Web.Hubs.RequestModels;
-
-namespace Resistance.Web.Services
+﻿namespace Resistance.Web.Services
 {
     public interface IGameConnectionIdStore
     {
-        public string GetConnectionId(GamePlayer gamePlayer);
+        string GetConnectionId(string gameCode, string playerId);
 
-        public void StoreConnectionId(GamePlayer gamePlayer, string connectionId);
+        void StoreConnectionId(string gameCode, string connectionId);
+
+        void StoreConnectionId(string gameCode, string playerId, string connectionId);
+
+        void RemoveConnectionId(string gameCode, string playerId);
     }
 }

@@ -1,5 +1,4 @@
-﻿using Resistance.Web.Hubs.RequestModels;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
@@ -41,14 +40,30 @@ namespace Resistance.Web.Services
         public void StoreConnectionId(string gameCode, string playerId, string connectionId)
         {
             _gameToPlayerToConnectionIds.AddOrUpdate(gameCode, new ConcurrentDictionary<string, string>(), (k, playerToConnectionIds) =>
-              {
-                  if (!playerToConnectionIds.TryAdd(playerId, connectionId))
-                  {
-                      throw new Exception($"ConnectionId {connectionId} already stored for ${playerId} in game ${gameCode}.");
-                  }
+            {
+                if (!playerToConnectionIds.TryAdd(playerId, connectionId))
+                {
+                    throw new Exception($"ConnectionId {connectionId} already stored for ${playerId} in game ${gameCode}.");
+                }
 
-                  return playerToConnectionIds;
-              });
+                return playerToConnectionIds;
+            });
+        }
+
+        public void RemoveConnectionId(string gameCode, string playerId)
+        {
+            GetPlayerToConnectionIds(gameCode).TryRemove(playerId, out _);
+            GetNonPlayerToConnectionIds(gameCode).TryRemove(playerId, out _);
+        }
+
+        private ConcurrentDictionary<string, object> GetNonPlayerToConnectionIds(string gameCode)
+        {
+            if (_gameToNonPlayerConnectionIds.TryGetValue(gameCode, out var nonPlayerToConnectionIds))
+            {
+                return nonPlayerToConnectionIds;
+            }
+
+            throw new Exception($"ConnectionIds not found for game code {gameCode}.");
         }
 
         private ConcurrentDictionary<string, string> GetPlayerToConnectionIds(string gameCode)

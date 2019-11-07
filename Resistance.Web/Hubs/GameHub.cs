@@ -5,6 +5,7 @@ using Resistance.Web.Handlers.Requests;
 using Resistance.Web.Handlers.Responses;
 using Resistance.Web.Hubs.RequestModels;
 using Resistance.Web.Services;
+using System;
 using System.Threading.Tasks;
 
 namespace Resistance.Web.Hubs
@@ -30,8 +31,7 @@ namespace Resistance.Web.Hubs
         public async Task<Response> PlayerReady(bool ready)
         {
             var request = new PlayerReadyRequest { Ready = ready } ;
-            PopulateRequestContextFromHubContext(request.Context);
-            return await _mediator.Send(request);
+            return await Handle(request);
         }
 
         public async Task JoinGame(GamePlayer player)
@@ -66,6 +66,18 @@ namespace Resistance.Web.Hubs
         //    PopulateRequestContextFromHubContext(request);
         //    await _mediator.Send(request);
         //}
+
+        public override async Task OnDisconnectedAsync(Exception ex)
+        {
+            await Handle(new ClientDisconnectedRequest());
+            await base.OnDisconnectedAsync(ex);
+        }
+
+        private async Task<Response> Handle(BaseRequest request)
+        {
+            PopulateRequestContextFromHubContext(request.Context);
+            return await _mediator.Send(request);
+        }
 
         private void PopulateRequestContextFromHubContext(GameContext requestContext)
         {
