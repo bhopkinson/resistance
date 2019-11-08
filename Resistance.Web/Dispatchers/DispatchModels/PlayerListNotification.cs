@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Resistance.Web.Dispatchers.Models
+namespace Resistance.Web.Dispatchers.DispatchModels
 {
     public class PlayersListNotification : IRequest
     {

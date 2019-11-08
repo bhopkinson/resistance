@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using MediatR;
 using MediatR.Pipeline;
-using Resistance.Web.Handlers.Requests;
-using Resistance.Web.Handlers.Responses;
+using Resistance.Web.Handlers.RequestModels;
+using Resistance.Web.Handlers.ResponseModels;
 using Resistance.Web.Services;
 
 namespace Resistance.Web.Handlers

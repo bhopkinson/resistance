@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Resistance.Web.Dispatchers.Models
+namespace Resistance.Web.Dispatchers.DispatchModels
 {
     public class GameBoardMission : IRequest
     {

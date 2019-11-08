@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Resistance.Web.Dispatchers.Models;
+using Resistance.Web.Dispatchers.DispatchModels;
 using Resistance.Web.Hubs;
 using Resistance.Web.Services;
 using System.Collections.Generic;

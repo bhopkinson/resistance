@@ -2,7 +2,7 @@
 using Resistance.Web.Hubs.RequestModels;
 using System.Collections.Generic;
 
-namespace Resistance.Web.Dispatchers.Models
+namespace Resistance.Web.Dispatchers.DispatchModels
 {
     public class NotificationContext : IRequest
     {

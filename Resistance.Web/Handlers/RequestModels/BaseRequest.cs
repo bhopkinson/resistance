@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using Resistance.Web.Handlers.Responses;
+using Resistance.Web.Handlers.ResponseModels;
 
-namespace Resistance.Web.Handlers.Requests
+namespace Resistance.Web.Handlers.RequestModels
 {
     public abstract class BaseRequest : IRequest<Response>
     {

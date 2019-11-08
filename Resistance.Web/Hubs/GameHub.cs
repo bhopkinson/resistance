@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
-using Resistance.Web.Handlers.Requests;
-using Resistance.Web.Handlers.Responses;
+using Resistance.Web.Handlers.RequestModels;
+using Resistance.Web.Handlers.ResponseModels;
 using Resistance.Web.Hubs.RequestModels;
 using Resistance.Web.Services;
 using System;
@@ -31,7 +31,7 @@ namespace Resistance.Web.Hubs
         public async Task<Response> PlayerReady(bool ready)
         {
             var request = new PlayerReadyRequest { Ready = ready } ;
-            return await Handle(request);
+            return await HandleRequest(request);
         }
 
         public async Task JoinGame(GamePlayer player)
@@ -69,11 +69,11 @@ namespace Resistance.Web.Hubs
 
         public override async Task OnDisconnectedAsync(Exception ex)
         {
-            await Handle(new ClientDisconnectedRequest());
+            await HandleRequest(new ClientDisconnectedRequest());
             await base.OnDisconnectedAsync(ex);
         }
 
-        private async Task<Response> Handle(BaseRequest request)
+        private async Task<Response> HandleRequest(BaseRequest request)
         {
             PopulateRequestContextFromHubContext(request.Context);
             return await _mediator.Send(request);

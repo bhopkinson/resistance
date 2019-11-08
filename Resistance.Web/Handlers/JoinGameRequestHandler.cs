@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
-using Resistance.Web.Dispatchers.Models;
-using Resistance.Web.Handlers.Requests;
-using Resistance.Web.Handlers.Responses;
+using Resistance.Web.Dispatchers.DispatchModels;
+using Resistance.Web.Handlers.RequestModels;
+using Resistance.Web.Handlers.ResponseModels;
 using Resistance.GameModels;
 using System.Linq;
 using System.Threading;

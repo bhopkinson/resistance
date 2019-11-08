@@ -1,7 +1,7 @@
 ﻿using Resistance.GameModels;
 using Resistance.GameModels.enums;
 
-namespace Resistance.Web.Dispatchers.Models
+namespace Resistance.Web.Dispatchers.DispatchModels
 {
     public class ShowCharacterNotification : NotificationContext
     {

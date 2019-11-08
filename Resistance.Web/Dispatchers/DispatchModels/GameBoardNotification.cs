@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MediatR;
 
-namespace Resistance.Web.Dispatchers.Models
+namespace Resistance.Web.Dispatchers.DispatchModels
 {
     public class GameBoardNotification : IRequest
     {

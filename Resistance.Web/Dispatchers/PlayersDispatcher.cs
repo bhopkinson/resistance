@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.SignalR;
-using Resistance.Web.Dispatchers.Models;
+using Resistance.Web.Dispatchers.DispatchModels;
 using Resistance.Web.Hubs;
 using System.Threading;
 using System.Threading.Tasks;

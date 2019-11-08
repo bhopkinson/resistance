@@ -1,4 +1,4 @@
-﻿namespace Resistance.Web.Handlers.Responses
+﻿namespace Resistance.Web.Handlers.ResponseModels
 {
     public class Response
     {

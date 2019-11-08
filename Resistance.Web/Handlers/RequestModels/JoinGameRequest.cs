@@ -1,4 +1,4 @@
-﻿namespace Resistance.Web.Handlers.Requests
+﻿namespace Resistance.Web.Handlers.RequestModels
 {
     public class JoinGameRequest : BaseRequest
     {

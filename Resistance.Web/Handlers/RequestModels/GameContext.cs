@@ -1,6 +1,6 @@
 ﻿using Resistance.GameModels;
 
-namespace Resistance.Web.Handlers.Requests
+namespace Resistance.Web.Handlers.RequestModels
 {
     public class GameContext
     {
