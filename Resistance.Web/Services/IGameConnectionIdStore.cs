@@ -1,7 +1,11 @@
-﻿namespace Resistance.Web.Services
+﻿using System.Collections.Generic;
+
+namespace Resistance.Web.Services
 {
     public interface IGameConnectionIdStore
     {
+        ICollection<string> GetConnectionIdsForGame(string gameCode);
+
         string GetConnectionId(string gameCode, string playerId);
 
         void StoreConnectionId(string gameCode, string connectionId);

@@ -11,7 +11,7 @@ namespace Resistance.Web.Services
 
         public GameConnectionIdStore() => _gameToPlayerToConnectionIds = new ConcurrentDictionary<string, ConcurrentDictionary<string, string>>();
 
-        public ICollection<string> GetConnectionIds(string gameCode) => GetPlayerToConnectionIds(gameCode).Values;
+        public ICollection<string> GetConnectionIdsForGame(string gameCode) => GetPlayerToConnectionIds(gameCode).Values;
 
         public string GetConnectionId(string gameCode, string playerId)
         {
