@@ -6,12 +6,12 @@ namespace Resistance.Web.Services
     {
         ICollection<string> GetConnectionIdsForGame(string gameCode);
 
-        string GetConnectionId(string gameCode, string playerId);
+        string GetPlayerConnectionIdForGame(string gameCode, string playerId);
 
-        void StoreConnectionId(string gameCode, string connectionId);
+        void StoreConnectionIdForGame(string gameCode, string connectionId);
 
-        void StoreConnectionId(string gameCode, string playerId, string connectionId);
+        void StorePlayerConnectionIdForGame(string gameCode, string playerId, string connectionId);
 
-        void RemoveConnectionId(string gameCode, string playerId);
+        void RemovePlayerConnectionIdForGame(string gameCode, string playerId);
     }
 }

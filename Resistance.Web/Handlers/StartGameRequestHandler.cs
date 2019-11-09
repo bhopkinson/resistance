@@ -9,6 +9,7 @@ using Resistance.Web.Handlers.ResponseModels;
 using Resistance.Web.Hubs.RequestModels;
 using Resistance.GameModels.enums;
 using Resistance.Web.Services;
+using Resistance.Web.Dispatchers;
 
 namespace Resistance.Web.Handlers
 {
@@ -18,17 +19,20 @@ namespace Resistance.Web.Handlers
         private readonly IMissionInitialisation _missionInitialisation;
         private readonly IPlayerOrderInitialisation _playerOrderInitialisation;
         private readonly IMediator _mediator;
+        private readonly IClientMessageDispatcherFactory _clientMessageDispatcherFactory;
 
         public StartGameRequestHandler(
             ICharacterAssignment characterAssignment,
             IMissionInitialisation missionInitialisation,
             IPlayerOrderInitialisation playerOrderInitialisation,
-            IMediator mediator)
+            IMediator mediator,
+            IClientMessageDispatcherFactory clientMessageDispatcherFactory)
         {
             _characterAssignment = characterAssignment;
             _missionInitialisation = missionInitialisation;
             _playerOrderInitialisation = playerOrderInitialisation;
             _mediator = mediator;
+            _clientMessageDispatcherFactory = clientMessageDispatcherFactory;
         }
         public async Task<Response> Handle(StartGameRequest request, CancellationToken cancellationToken)
         {
@@ -55,17 +59,12 @@ namespace Resistance.Web.Handlers
                 var playerCharacterNotification = new ShowCharacterNotification()
                 {
                     Role = player.Character.Role,
-                    Team = player.Character.Team,
-                    RecipientPlayers = new List<GamePlayer>()
-                    {
-                        new GamePlayer
-                        {
-                            PlayerInitials = player.Initials
-                        }
-                    }
+                    Team = player.Character.Team
                 };
 
-                await _mediator.Publish(playerCharacterNotification);
+                await _clientMessageDispatcherFactory
+                    .CreateClientMessageDispatcher(x => x.ShowCharacter(playerCharacterNotification))
+                    .SendToPlayerInGame(context.GameCode, player.Initials);
             }
 
             context.Game.SortedPlayers = _playerOrderInitialisation.GetSortedPlayers(players);

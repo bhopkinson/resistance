@@ -2,5 +2,6 @@
 {
     public class JoinGameRequest : BaseRequest
     {
+        public string ConnectionId { get; set; }
     }
 }

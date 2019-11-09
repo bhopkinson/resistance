@@ -48,7 +48,8 @@ namespace Resistance.Web
 
             services
                 .AddSingleton<IGameManager, GameManager>()
-                .AddSingleton<IGameConnectionIdStore, GameConnectionIdStore>();
+                .AddSingleton<IGameConnectionIdStore, GameConnectionIdStore>()
+                .AddSingleton<IClientMessageDispatcherFactory, ClientMessageDispatcherFactory>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

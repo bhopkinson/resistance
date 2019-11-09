@@ -13,7 +13,7 @@ namespace Resistance.Web.Services
 
         public ICollection<string> GetConnectionIdsForGame(string gameCode) => GetPlayerToConnectionIds(gameCode).Values;
 
-        public string GetConnectionId(string gameCode, string playerId)
+        public string GetPlayerConnectionIdForGame(string gameCode, string playerId)
         {
             var playerToConnectionIds = GetPlayerToConnectionIds(gameCode);
             if (playerToConnectionIds.TryGetValue(playerId, out var connectionId))
@@ -24,7 +24,7 @@ namespace Resistance.Web.Services
             throw new Exception($"ConnectionId {connectionId} not found for player ${playerId}.");
         }
 
-        public void StoreConnectionId(string gameCode, string connectionId)
+        public void StoreConnectionIdForGame(string gameCode, string connectionId)
         {
             _gameToNonPlayerConnectionIds.AddOrUpdate(gameCode, new ConcurrentDictionary<string, object>(), (k, connectionIds) =>
             {
@@ -37,7 +37,7 @@ namespace Resistance.Web.Services
             });
         }
 
-        public void StoreConnectionId(string gameCode, string playerId, string connectionId)
+        public void StorePlayerConnectionIdForGame(string gameCode, string playerId, string connectionId)
         {
             _gameToPlayerToConnectionIds.AddOrUpdate(gameCode, new ConcurrentDictionary<string, string>(), (k, playerToConnectionIds) =>
             {
@@ -50,7 +50,7 @@ namespace Resistance.Web.Services
             });
         }
 
-        public void RemoveConnectionId(string gameCode, string playerId)
+        public void RemovePlayerConnectionIdForGame(string gameCode, string playerId)
         {
             GetPlayerToConnectionIds(gameCode).TryRemove(playerId, out _);
             GetNonPlayerToConnectionIds(gameCode).TryRemove(playerId, out _);

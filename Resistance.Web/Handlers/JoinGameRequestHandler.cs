@@ -7,6 +7,7 @@ using Resistance.GameModels;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Resistance.Web.Services;
 
 namespace Resistance.Web.Handlers
 {
@@ -14,11 +15,19 @@ namespace Resistance.Web.Handlers
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
+        private readonly IGameConnectionIdStore _gameConnectionIdStore;
+        private readonly IClientMessageDispatcherFactory _clientMessageDispatcherFactory;
 
-        public JoinGameRequestHandler(IMediator mediator, IMapper mapper)
+        public JoinGameRequestHandler(
+            IMediator mediator,
+            IMapper mapper,
+            IGameConnectionIdStore gameConnectionIdStore,
+            IClientMessageDispatcherFactory clientMessageDispatcherFactory)
         {
             _mediator = mediator;
             _mapper = mapper;
+            _gameConnectionIdStore = gameConnectionIdStore;
+            _clientMessageDispatcherFactory = clientMessageDispatcherFactory;
         }
 
         public async Task<Response> Handle(JoinGameRequest request, CancellationToken cancellationToken)
@@ -35,12 +44,16 @@ namespace Resistance.Web.Handlers
             var message = success ? null : "Player with initials already exists.";
             var response = new Response(success, message);
 
+            _gameConnectionIdStore.StoreConnectionIdForGame(context.GameCode, request.ConnectionId);
+            
             // TODO: refactor into own handler
             var playerDetails = context.Game.Players.Values
                 .Select(p => new PlayerDetails { Intials = p.Initials, Ready = p.Ready })
                 .ToList();
-            var playersListNotification = new PlayersListNotification() { Players = playerDetails };
-            await _mediator.Publish(playersListNotification);
+
+            await _clientMessageDispatcherFactory
+                .CreateClientMessageDispatcher(x => x.UpdatePlayersList(playerDetails))
+                .SendToAllGameClients(context.GameCode);
 
             return response;
         }

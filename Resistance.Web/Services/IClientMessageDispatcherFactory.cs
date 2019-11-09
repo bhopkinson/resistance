@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Resistance.Web.Dispatchers
+namespace Resistance.Web.Services
 {
     public interface IClientMessageDispatcherFactory
     {

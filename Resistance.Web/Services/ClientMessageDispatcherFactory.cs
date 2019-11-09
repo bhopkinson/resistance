@@ -4,7 +4,7 @@ using Resistance.Web.Services;
 using System;
 using System.Threading.Tasks;
 
-namespace Resistance.Web.Dispatchers
+namespace Resistance.Web.Services
 {
     public class ClientMessageDispatcherFactory : IClientMessageDispatcherFactory
     {

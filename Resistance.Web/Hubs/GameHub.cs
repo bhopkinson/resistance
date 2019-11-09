@@ -38,6 +38,7 @@ namespace Resistance.Web.Hubs
         {
             var request = new JoinGameRequest
             {
+                ConnectionId = Context.ConnectionId,
                 Context = new GameContext
                 {
                     PlayerIntials = player.PlayerInitials,
@@ -48,8 +49,6 @@ namespace Resistance.Web.Hubs
             var response = await _mediator.Send(request);
             if (response.Success)
             {
-                _connectionManager.StoreConnectionId(player, Context.ConnectionId);
-
                 Context.Items["GameId"] = player.GameId;
                 Context.Items["PlayerInitials"] = player.PlayerInitials;
             }
@@ -75,8 +74,17 @@ namespace Resistance.Web.Hubs
 
         private async Task<Response> HandleRequest(BaseRequest request)
         {
+            EnsureGameContext(request);
             PopulateRequestContextFromHubContext(request.Context);
             return await _mediator.Send(request);
+        }
+
+        private void EnsureGameContext(BaseRequest request)
+        {
+            if (request.Context == null)
+            {
+                request.Context = new GameContext();
+            }
         }
 
         private void PopulateRequestContextFromHubContext(GameContext requestContext)

@@ -19,7 +19,7 @@ namespace Resistance.Web.Handlers
         public Task<Response> Handle(ClientDisconnectedRequest request, CancellationToken cancellationToken)
         {
             var context = request.Context;
-            _gameConnectionIdStore.RemoveConnectionId(context.GameCode, context.PlayerIntials);
+            _gameConnectionIdStore.RemovePlayerConnectionIdForGame(context.GameCode, context.PlayerIntials);
             return Task.FromResult(new Response());
         }
     }
