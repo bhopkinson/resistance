@@ -25,7 +25,7 @@ namespace Resistance.Web.Hubs
 
         public async Task<Response> CreateGame()
         {
-            return await _mediator.Send(new CreateGameRequest());
+            return await _mediator.Send(new CreateGameRequest { ConnectionId = Context.ConnectionId });
         }
 
         public async Task<Response> PlayerReady(bool ready)

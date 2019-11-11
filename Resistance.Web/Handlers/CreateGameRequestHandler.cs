@@ -10,10 +10,12 @@ namespace Resistance.Web.Handlers
     public class CreateGameRequestHandler : IRequestHandler<CreateGameRequest, CreateGameResponse>
     {
         private IGameManager _gameManager;
+        private IGameConnectionIdStore _gameConnectionIdStore;
 
-        public CreateGameRequestHandler(IGameManager gameManager)
+        public CreateGameRequestHandler(IGameManager gameManager, IGameConnectionIdStore gameConnectionIdStore)
         {
             _gameManager = gameManager;
+            _gameConnectionIdStore = gameConnectionIdStore;
         }
 
         public async Task<CreateGameResponse> Handle(CreateGameRequest request, CancellationToken cancellationToken)
@@ -31,6 +33,7 @@ namespace Resistance.Web.Handlers
             }
             else
             {
+                _gameConnectionIdStore.StoreConnectionIdForGame(code, request.ConnectionId);
                 response.Success = true;
             }
 

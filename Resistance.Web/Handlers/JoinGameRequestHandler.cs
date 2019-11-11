@@ -44,7 +44,7 @@ namespace Resistance.Web.Handlers
             var message = success ? null : "Player with initials already exists.";
             var response = new Response(success, message);
 
-            _gameConnectionIdStore.StoreConnectionIdForGame(context.GameCode, request.ConnectionId);
+            _gameConnectionIdStore.StorePlayerConnectionIdForGame(context.GameCode, context.PlayerIntials, request.ConnectionId);
             
             // TODO: refactor into own handler
             var playerDetails = context.Game.Players.Values

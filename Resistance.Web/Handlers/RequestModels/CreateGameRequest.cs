@@ -5,5 +5,6 @@ namespace Resistance.Web.Handlers.RequestModels
 {
     public class CreateGameRequest : IRequest<CreateGameResponse>
     {
+        public string ConnectionId { get; set; }
     }
 }

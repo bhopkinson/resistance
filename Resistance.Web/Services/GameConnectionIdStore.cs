@@ -9,7 +9,11 @@ namespace Resistance.Web.Services
         private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, string>> _gameToPlayerToConnectionIds;
         private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, object>> _gameToNonPlayerConnectionIds;
 
-        public GameConnectionIdStore() => _gameToPlayerToConnectionIds = new ConcurrentDictionary<string, ConcurrentDictionary<string, string>>();
+        public GameConnectionIdStore()
+        {
+            _gameToPlayerToConnectionIds = new ConcurrentDictionary<string, ConcurrentDictionary<string, string>>();
+            _gameToNonPlayerConnectionIds = new ConcurrentDictionary<string, ConcurrentDictionary<string, object>>();
+        }
 
         public ICollection<string> GetConnectionIdsForGame(string gameCode) => GetPlayerToConnectionIds(gameCode).Values;
 
