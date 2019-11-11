@@ -12,6 +12,9 @@ namespace Resistance.Web.Hubs
 {
     public class GameHub : Hub<IGameHubClient>
     {
+        private const string GameCode = "GameCode";
+        private const string PlayerInitials = "PlayerInitials";
+
         private readonly IMediator _mediator;
         private readonly IGameConnectionIdStore _connectionManager;
 
@@ -52,8 +55,8 @@ namespace Resistance.Web.Hubs
             new GameContext
             {
                 ConnectionId = Context.ConnectionId,
-                GameCode = (string)Context.Items["GameCode"],
-                PlayerIntials = (string)Context.Items["PlayerIntials"]
+                GameCode = (string)Context.Items[GameCode],
+                PlayerIntials = (string)Context.Items[PlayerInitials]
             };
     }
 }

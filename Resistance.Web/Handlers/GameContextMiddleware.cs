@@ -1,5 +1,4 @@
-﻿using Resistance.Web.Handlers.RequestModels;
-using Resistance.Web.Services;
+﻿using Resistance.Web.Services;
 using SimpleMediator.Core;
 using SimpleMediator.Middleware;
 using System.Threading;
@@ -21,7 +20,7 @@ namespace Resistance.Web.Handlers
             var gameContext = mediationContext as GameContext;
             if (gameContext != null)
             {
-                gameContext.Game = _gameManager.GetGame(gameContext.GameCode);
+                gameContext.Game = gameContext.GameCode != null ? _gameManager.GetGame(gameContext.GameCode) : null;
             }
 
             return await next.Invoke(message, mediationContext, cancellationToken);

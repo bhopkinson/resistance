@@ -1,5 +1,4 @@
 ﻿using Resistance.Web.Dispatchers.DispatchModels;
-using Resistance.Web.Handlers.RequestModels;
 using Resistance.GameModels;
 using System.Linq;
 using System.Threading;
@@ -7,6 +6,7 @@ using System.Threading.Tasks;
 using Resistance.Web.Services;
 using SimpleMediator.Commands;
 using SimpleMediator.Core;
+using Resistance.Web.Commands;
 
 namespace Resistance.Web.Handlers
 {

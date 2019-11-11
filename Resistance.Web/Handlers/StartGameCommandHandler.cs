@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Resistance.Web.Dispatchers.DispatchModels;
-using Resistance.Web.Handlers.RequestModels;
 using Resistance.GameModels.enums;
 using Resistance.Web.Services;
 using SimpleMediator.Commands;
