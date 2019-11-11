@@ -29,7 +29,8 @@ namespace Resistance.Web.Handlers
         protected override async Task HandleCommandAsync(JoinGameCommand command, IMediationContext mediationContext, CancellationToken cancellationToken)
         {
             var gameContext = mediationContext as GameContext;
-            var game = _gameManager.GetGame(gameContext.GameCode);
+            var game = _gameManager.GetGame(gameContext.GameCode); // TODO - this should come from command.GameCode.
+            // TODO: refactor gameContext throughout this method.
 
             var player = new Player()
             {
