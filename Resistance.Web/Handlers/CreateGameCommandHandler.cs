@@ -16,7 +16,7 @@ namespace Resistance.Web.Handlers
             _gameManager = gameManager;
         }
 
-        protected async override Task HandleCommandAsync(CreateGameCommand command, IMediationContext mediationContext, CancellationToken cancellationToken)
+        protected override async Task HandleCommandAsync(CreateGameCommand command, IMediationContext mediationContext, CancellationToken cancellationToken)
         {
             var code = _gameManager.CreateGame();
             await Task.CompletedTask;

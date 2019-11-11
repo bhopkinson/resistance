@@ -1,56 +1,49 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using Resistance.Web.Dispatchers.DispatchModels;
 using Resistance.Web.Handlers.RequestModels;
-using Resistance.Web.Handlers.ResponseModels;
-using Resistance.Web.Hubs.RequestModels;
 using Resistance.GameModels.enums;
 using Resistance.Web.Services;
-using Resistance.Web.Dispatchers;
+using SimpleMediator.Commands;
+using Resistance.Web.Commands;
+using SimpleMediator.Core;
 
 namespace Resistance.Web.Handlers
 {
-    public class StartGameRequestHandler : IRequestHandler<StartGameRequest, Response>
+    public class StartGameCommandHandler : CommandHandler<StartGameCommand>
     {
         private readonly ICharacterAssignment _characterAssignment;
         private readonly IMissionInitialisation _missionInitialisation;
         private readonly IPlayerOrderInitialisation _playerOrderInitialisation;
-        private readonly IMediator _mediator;
         private readonly IClientMessageDispatcherFactory _clientMessageDispatcherFactory;
 
-        public StartGameRequestHandler(
+        public StartGameCommandHandler(
             ICharacterAssignment characterAssignment,
             IMissionInitialisation missionInitialisation,
             IPlayerOrderInitialisation playerOrderInitialisation,
-            IMediator mediator,
             IClientMessageDispatcherFactory clientMessageDispatcherFactory)
         {
             _characterAssignment = characterAssignment;
             _missionInitialisation = missionInitialisation;
             _playerOrderInitialisation = playerOrderInitialisation;
-            _mediator = mediator;
             _clientMessageDispatcherFactory = clientMessageDispatcherFactory;
         }
-        public async Task<Response> Handle(StartGameRequest request, CancellationToken cancellationToken)
+
+        protected override async Task HandleCommandAsync(StartGameCommand command, IMediationContext mediationContext, CancellationToken cancellationToken)
         {
-            var context = request.Context;
-            var gameReady = context.Game.Players.All(o => o.Value.Ready);
+            var gameContext = mediationContext as GameContext;
+            var gameReady = gameContext.Game.Players.All(o => o.Value.Ready);
 
-            if (!gameReady)
-            {
-                return new Response(false, "Not all players are ready.");
-            }
+            // TODO: Add validation
 
-            context.Game.CurrentState = GameState.Started;
-            foreach (var playerReset in context.Game.Players)
+            gameContext.Game.CurrentState = GameState.Started;
+            foreach (var playerReset in gameContext.Game.Players)
             {
                 playerReset.Value.Ready = false;
             }
 
-            var players = context.Game.Players.Values.ToList();
+            var players = gameContext.Game.Players.Values.ToList();
 
             _characterAssignment.AssignRoles(players);
 
@@ -64,18 +57,16 @@ namespace Resistance.Web.Handlers
 
                 await _clientMessageDispatcherFactory
                     .CreateClientMessageDispatcher(x => x.ShowCharacter(playerCharacterNotification))
-                    .SendToPlayerInGame(context.GameCode, player.Initials);
+                    .SendToPlayerInGame(gameContext.GameCode, player.Initials);
             }
 
-            context.Game.SortedPlayers = _playerOrderInitialisation.GetSortedPlayers(players);
-            context.Game.Missions = _missionInitialisation.InitiliseMissions(players.Count);
+            gameContext.Game.SortedPlayers = _playerOrderInitialisation.GetSortedPlayers(players);
+            gameContext.Game.Missions = _missionInitialisation.InitiliseMissions(players.Count);
 
-            var firstMission = context.Game.Missions.Where(o => o.Number == 1).SingleOrDefault();
-            firstMission.Team.Leader = context.Game.SortedPlayers.First();
+            var firstMission = gameContext.Game.Missions.Where(o => o.Number == 1).SingleOrDefault();
+            firstMission.Team.Leader = gameContext.Game.SortedPlayers.First();
 
             //TODO broadcast mission update
-
-            return new Response(true);
         }
     }
 }

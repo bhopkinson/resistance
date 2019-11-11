@@ -1,6 +1,6 @@
 ﻿using SimpleMediator.Commands;
 
-namespace Resistance.Web.Handlers.RequestModels
+namespace Resistance.Web.Commands
 {
     public class JoinGameCommand : ICommand
     {

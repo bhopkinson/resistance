@@ -1,7 +1,7 @@
 ﻿using Resistance.GameModels;
 using SimpleMediator.Core;
 
-namespace Resistance.Web.Handlers.RequestModels
+namespace Resistance.Web.Handlers
 {
     public class GameContext : IMediationContext
     {

@@ -23,7 +23,7 @@ namespace Resistance.Web.Handlers
             _clientMessageDispatcherFactory = clientMessageDispatcherFactory;
         }
 
-        protected async override Task HandleCommandAsync(JoinGameCommand command, IMediationContext mediationContext, CancellationToken cancellationToken)
+        protected override async Task HandleCommandAsync(JoinGameCommand command, IMediationContext mediationContext, CancellationToken cancellationToken)
         {
             var gameContext = mediationContext as GameContext;
             var game = gameContext.Game;
