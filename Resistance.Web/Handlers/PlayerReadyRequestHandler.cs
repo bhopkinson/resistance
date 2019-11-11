@@ -11,7 +11,7 @@ using Resistance.Web.Services;
 
 namespace Resistance.Web.Handlers
 {
-    public class PlayerReadyRequestHandler : IRequestHandler<PlayerReadyRequest, Response>
+    public class PlayerReadyRequestHandler : IRequestHandler<PlayerReadyCommand, Response>
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
@@ -27,7 +27,7 @@ namespace Resistance.Web.Handlers
             _clientMessageDispatcherFactory = clientMessageDispatcherFactory;
         }
 
-        public async Task<Response> Handle(PlayerReadyRequest request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(PlayerReadyCommand request, CancellationToken cancellationToken)
         {
             var context = request.Context;
             var player = context.Game.Players

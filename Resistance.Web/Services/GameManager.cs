@@ -21,20 +21,21 @@ namespace Resistance.Web.Services
             var game = new Game();
             string code;
 
-            do
-            {
-                code = _gameCodeGenerator.GetCode();
-            }
-            while (!_games.TryAdd(code, game));
+            //do
+            //{
+            //    code = _gameCodeGenerator.GetCode();
+            //}
+            //while (!_games.TryAdd(code, game));
+
+            // TODO
+            code = "0";
+            _games.TryAdd("0", game);
 
             return code;
         }
 
         public Game GetGame(string gameCode)
         {
-            // Currently just get single game
-            return _games.Values.FirstOrDefault();
-
             if (_games.TryGetValue(gameCode, out var game))
             {
                 return game;
