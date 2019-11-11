@@ -12,13 +12,16 @@ namespace Resistance.Web.Handlers
 {
     public class JoinGameCommandHandler : CommandHandler<JoinGameCommand>
     {
+        private readonly IGameManager _gameManager;
         private readonly IGameConnectionIdStore _gameConnectionIdStore;
         private readonly IClientMessageDispatcherFactory _clientMessageDispatcherFactory;
 
         public JoinGameCommandHandler(
+            IGameManager gameManager,
             IGameConnectionIdStore gameConnectionIdStore,
             IClientMessageDispatcherFactory clientMessageDispatcherFactory)
         {
+            _gameManager = gameManager;
             _gameConnectionIdStore = gameConnectionIdStore;
             _clientMessageDispatcherFactory = clientMessageDispatcherFactory;
         }
@@ -26,7 +29,7 @@ namespace Resistance.Web.Handlers
         protected override async Task HandleCommandAsync(JoinGameCommand command, IMediationContext mediationContext, CancellationToken cancellationToken)
         {
             var gameContext = mediationContext as GameContext;
-            var game = gameContext.Game;
+            var game = _gameManager.GetGame(gameContext.GameCode);
 
             var player = new Player()
             {
