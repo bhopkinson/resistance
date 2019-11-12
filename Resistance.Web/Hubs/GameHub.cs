@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using SimpleMediator.Core;
 using Resistance.Web.Commands;
 using Resistance.Web.Events;
-using Resistance.Web.Handlers;
+using Resistance.Web.MediationModels;
 
 namespace Resistance.Web.Hubs
 {
@@ -24,7 +24,8 @@ namespace Resistance.Web.Hubs
             _connectionManager = connectionManager;
         }
 
-        
+        public async Task CreateGame() =>
+            await Handle(new CreateGameCommand());
 
         public async Task JoinGame(GamePlayer player) =>
             await Handle(new JoinGameCommand

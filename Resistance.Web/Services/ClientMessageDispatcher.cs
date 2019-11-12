@@ -37,7 +37,7 @@ namespace Resistance.Web.Services
             await SendToConnecionIds(
                 _gameConnectionIdStore.GetConnectionIdsForGame(gameCode));
 
-        private async Task SendToConnectionId(string connectionId) =>
+        public async Task SendToConnectionId(string connectionId) =>
             await _clientMethod(_gameHubContext.Clients.Client(connectionId));
 
         private async Task SendToConnecionIds(ICollection<string> connectionIds) =>

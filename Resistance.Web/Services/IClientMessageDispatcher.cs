@@ -10,5 +10,7 @@ namespace Resistance.Web.Services
         Task SendToPlayersInGame(string gameCode, ICollection<string> playerIds);
 
         Task SendToAllGameClients(string gameCode);
+
+        Task SendToConnectionId(string connectionId);
     }
 }

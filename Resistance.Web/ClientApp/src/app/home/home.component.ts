@@ -7,7 +7,13 @@ import { GameService } from '../game.service';
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
-  constructor(private gameService: GameService, private router: Router) { }
+    constructor(
+        private gameService: GameService,
+        private router: Router) { }
+
+    createGame() {
+        this.gameService.CreateGame();
+    }
 
   goToTvPage(){
     this.router.navigateByUrl('/tv/room',{skipLocationChange: true});

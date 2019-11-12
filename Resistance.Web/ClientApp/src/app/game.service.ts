@@ -42,6 +42,11 @@ export class GameService {
         this.startConnection();
     }
 
+    public CreateGame() {
+        this._hubConnection.invoke('CreateGame')
+            .catch(err => console.error(err));
+    }
+
     public JoinGame(initials: string) {
         this.initials = initials;
         let player: GamePlayer = { gameId: '0', playerInitials: initials };
@@ -52,11 +57,6 @@ export class GameService {
     public PlayerReady(ready: boolean) {
         this._hubConnection.invoke('PlayerReady', ready)
         .catch(err => console.error(err));
-    }
-
-    public CreateGame() {
-        this._hubConnection.invoke('CreateGame')
-            .catch(err => console.error(err));
     }
 
     public StartGame() {
