@@ -19,7 +19,8 @@ namespace Resistance.Web.Handlers
         protected override Task HandleEventAsync(ClientDisconnectedEvent @event, IMediationContext mediationContext, CancellationToken cancellationToken)
         {
             var gameContext = mediationContext as GameContext;
-            _gameConnectionIdStore.RemovePlayerConnectionIdForGame(gameContext.ConnectionId, gameContext.PlayerIntials);
+            // TODO: Add back in:
+            // _gameConnectionIdStore.RemovePlayerConnectionIdForGame(gameContext.GameCode, gameContext.ConnectionId);
             return Task.CompletedTask;
         }
     }

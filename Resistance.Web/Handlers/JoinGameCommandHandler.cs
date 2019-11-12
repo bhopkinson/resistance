@@ -29,8 +29,7 @@ namespace Resistance.Web.Handlers
         protected override async Task HandleCommandAsync(JoinGameCommand command, IMediationContext mediationContext, CancellationToken cancellationToken)
         {
             var gameContext = mediationContext as GameContext;
-            var game = _gameManager.GetGame(gameContext.GameCode); // TODO - this should come from command.GameCode.
-            // TODO: refactor gameContext throughout this method.
+            var game = _gameManager.GetGame(command.GameCode);
 
             var player = new Player()
             {
@@ -41,14 +40,17 @@ namespace Resistance.Web.Handlers
 
             _gameConnectionIdStore.StorePlayerConnectionIdForGame(command.GameCode, command.PlayerInitials, gameContext.ConnectionId);
 
+            gameContext.GameCode = command.GameCode;
+            gameContext.PlayerIntials = command.PlayerInitials;
+
             // TODO: refactor into own handler
-            var playerDetails = gameContext.Game.Players.Values
+            var playerDetails = game.Players.Values
                 .Select(p => new PlayerDetails { Intials = p.Initials, Ready = p.Ready })
                 .ToList();
 
             await _clientMessageDispatcherFactory
                 .CreateClientMessageDispatcher(x => x.UpdatePlayersList(playerDetails))
-                .SendToAllGameClients(gameContext.GameCode);
+                .SendToAllGameClients(command.GameCode);
         }
     }
 }

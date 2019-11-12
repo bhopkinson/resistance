@@ -46,10 +46,17 @@ namespace Resistance.Web.Hubs
         public override async Task OnDisconnectedAsync(Exception ex) =>
             await Handle(new ClientDisconnectedEvent());
 
-        private async Task Handle<TResult>(IMessage<TResult> message) =>
+        private async Task Handle<TResult>(IMessage<TResult> message)
+        {
+            var gameContext = GetGameContext();
+
             await _mediator.HandleAsync(
                 message,
-                GetGameContext());
+                gameContext);
+
+            Context.Items[GameCode] = gameContext.GameCode;
+            Context.Items[PlayerInitials] = gameContext.PlayerIntials;
+        }
 
         private GameContext GetGameContext() =>
             new GameContext
