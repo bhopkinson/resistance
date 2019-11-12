@@ -24,8 +24,7 @@ namespace Resistance.Web.Hubs
             _connectionManager = connectionManager;
         }
 
-        public async Task CreateGame() =>
-            await Handle(new CreateGameCommand());
+        
 
         public async Task JoinGame(GamePlayer player) =>
             await Handle(new JoinGameCommand

@@ -89,7 +89,8 @@ namespace Resistance.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<GameHub>("/game-hub");
+                endpoints.MapHub<LobbyHub>("/lobby");
+                endpoints.MapHub<GameHub>("/game");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");

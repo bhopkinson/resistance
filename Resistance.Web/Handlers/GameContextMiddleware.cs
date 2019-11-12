@@ -1,4 +1,6 @@
-﻿using Resistance.Web.Services;
+﻿using Resistance.Web.MediationModels;
+using Resistance.Web.MediationModels.Interfaces;
+using Resistance.Web.Services;
 using SimpleMediator.Core;
 using SimpleMediator.Middleware;
 using System.Threading;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Resistance.Web.Handlers
 {
-    public class GameContextMiddleware<TMessage, TResponse> : IMiddleware<TMessage, TResponse> where TMessage : IMessage<TResponse>
+    public class GameContextMiddleware<TMessage, TResponse> : IMiddleware<TMessage, TResponse> where TMessage : IGameMessage<TResponse>
     {
         IGameManager _gameManager;
 

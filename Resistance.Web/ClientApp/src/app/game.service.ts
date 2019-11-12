@@ -66,7 +66,7 @@ export class GameService {
 
     private createConnection() {
         this._hubConnection = new HubConnectionBuilder()
-            .withUrl(window.location.href + 'game-hub')
+            .withUrl(window.location.href + 'game')
             .withAutomaticReconnect(new RetryPolicy())
             .configureLogging(signalR.LogLevel.Information)
         .build();
