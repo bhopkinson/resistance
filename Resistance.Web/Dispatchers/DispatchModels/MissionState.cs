@@ -1,4 +1,4 @@
-namespace Resistance.Web.Dispatchers.Models
+namespace Resistance.Web.Dispatchers.DispatchModels
 {
     public enum MissionState
     {

@@ -1,8 +1,8 @@
 using MediatR;
 
-namespace Resistance.Web.Dispatchers.Models
+namespace Resistance.Web.Dispatchers.DispatchModels
 {
-    public class GameBoardMission : INotification
+    public class GameBoardMission : IRequest
     {
         public MissionState State { get; set; }
         public int FailsRequired { get; set; }

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Resistance.Web.Hubs;
 using Resistance.Web.Services;
+using SimpleMediator.Extensions.Microsoft.DependencyInjection;
 using System.Reflection;
 
 namespace Resistance.Web
@@ -29,7 +30,11 @@ namespace Resistance.Web
         {
             var assembly = Assembly.GetExecutingAssembly();
             services.AddAutoMapper(assembly);
-            services.AddMediatR(assembly);
+            //services.AddMediatR(assembly);
+
+            services
+                .AddSimpleMediator()
+                .AddSimpleMediatorMiddleware();
 
             services.AddSignalR(options =>
             {
@@ -48,7 +53,8 @@ namespace Resistance.Web
 
             services
                 .AddSingleton<IGameManager, GameManager>()
-                .AddSingleton<IGameConnectionIdStore, GameConnectionIdStore>();
+                .AddSingleton<IGameConnectionIdStore, GameConnectionIdStore>()
+                .AddSingleton<IClientMessageDispatcherFactory, ClientMessageDispatcherFactory>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

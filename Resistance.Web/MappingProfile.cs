@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Resistance.GameModels;
-using Resistance.Web.Dispatchers.Models;
+using Resistance.Web.Dispatchers.DispatchModels;
 
 namespace Resistance.Web
 {

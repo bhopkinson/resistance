@@ -1,4 +1,4 @@
-﻿using Resistance.Web.Dispatchers.Models;
+﻿using Resistance.Web.Dispatchers.DispatchModels;
 using Resistance.GameModels;
 using Resistance.GameModels.enums;
 using System;

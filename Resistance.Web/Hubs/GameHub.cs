@@ -1,76 +1,69 @@
-﻿using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.SignalR;
-using Resistance.Web.Handlers.Requests;
-using Resistance.Web.Handlers.Responses;
+﻿using Microsoft.AspNetCore.SignalR;
 using Resistance.Web.Hubs.RequestModels;
 using Resistance.Web.Services;
+using System;
 using System.Threading.Tasks;
+using SimpleMediator.Core;
+using Resistance.Web.Commands;
+using Resistance.Web.Events;
+using Resistance.Web.Handlers;
 
 namespace Resistance.Web.Hubs
 {
     public class GameHub : Hub<IGameHubClient>
     {
+        private const string GameCode = "GameCode";
+        private const string PlayerInitials = "PlayerInitials";
+
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
         private readonly IGameConnectionIdStore _connectionManager;
 
-        public GameHub(IMediator mediator, IMapper mapper, IGameConnectionIdStore connectionManager)
+        public GameHub(IMediator mediator, IGameConnectionIdStore connectionManager)
         {
             _mediator = mediator;
-            _mapper = mapper;
             _connectionManager = connectionManager;
         }
 
-        public async Task<Response> CreateGame()
-        {
-            return await _mediator.Send(new CreateGameRequest());
-        }
+        public async Task CreateGame() =>
+            await Handle(new CreateGameCommand());
 
-        public async Task<Response> PlayerReady(bool ready)
-        {
-            var request = new PlayerReadyRequest { Ready = ready } ;
-            PopulateRequestContextFromHubContext(request.Context);
-            return await _mediator.Send(request);
-        }
-
-        public async Task JoinGame(GamePlayer player)
-        {
-            var request = new JoinGameRequest
+        public async Task JoinGame(GamePlayer player) =>
+            await Handle(new JoinGameCommand
             {
-                Context = new GameContext
-                {
-                    PlayerIntials = player.PlayerInitials,
-                    GameCode = player.GameId
-                }
+                GameCode = player.GameId,
+                PlayerInitials = player.PlayerInitials
+            });
+
+        public async Task PlayerReady(bool ready) =>
+            await Handle(new PlayerReadyCommand
+            {
+                Ready = ready
+            });
+
+        public async Task StartGame() =>
+            await Handle(new StartGameCommand());
+
+        public override async Task OnDisconnectedAsync(Exception ex) =>
+            await Handle(new ClientDisconnectedEvent());
+
+        private async Task Handle<TResult>(IMessage<TResult> message)
+        {
+            var gameContext = GetGameContext();
+
+            await _mediator.HandleAsync(
+                message,
+                gameContext);
+
+            Context.Items[GameCode] = gameContext.GameCode;
+            Context.Items[PlayerInitials] = gameContext.PlayerIntials;
+        }
+
+        private GameContext GetGameContext() =>
+            new GameContext
+            {
+                ConnectionId = Context.ConnectionId,
+                GameCode = (string)Context.Items[GameCode],
+                PlayerIntials = (string)Context.Items[PlayerInitials]
             };
-
-            var response = await _mediator.Send(request);
-            if (response.Success)
-            {
-                _connectionManager.StoreConnectionId(player, Context.ConnectionId);
-
-                Context.Items["GameId"] = player.GameId;
-                Context.Items["PlayerInitials"] = player.PlayerInitials;
-            }
-        }
-
-        public async Task StartGame()
-        {
-            await _mediator.Send(new StartGameRequest());
-        }
-
-        //public async Task PlayMissionCard(PlayMissionCard missionCard)
-        //{
-        //    var request = new PlayMissionCardRequest();
-        //    PopulateRequestContextFromHubContext(request);
-        //    await _mediator.Send(request);
-        //}
-
-        private void PopulateRequestContextFromHubContext(GameContext requestContext)
-        {
-            requestContext.GameCode = (string)Context.Items["GameId"];
-            requestContext.PlayerIntials = (string)Context.Items["PlayerInitials"];
-        }
     }
 }
