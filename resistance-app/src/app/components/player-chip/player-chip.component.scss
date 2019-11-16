@@ -1,0 +1,23 @@
+.mat-chip {
+    height: 50px;
+    width: 150px;
+    justify-content: space-between;
+    border: 2px solid;
+    border-radius: 50px;
+    font-size: 24px;
+    font-weight: 400;
+    background: transparent;
+
+    .mat-chip-avatar {
+        height: 50px;
+        width: 50px;
+        margin-left: 0px;
+    }
+
+    .mat-chip-trailing-icon {
+        font-size: 28px;
+        font-weight: 600;
+        margin-top: 4px;
+        margin-right: 12px;
+    }
+}

@@ -1,0 +1,19 @@
+@mixin player-chip-theme($theme) {
+
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, warn);
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+
+    // $light-green: mat-palette($mat-light-green, 600);
+    // $light-blue: mat-palette($mat-light-blue, 600);
+
+    .app-player-chip {
+        .mat-chip {
+            &.mat-primary {
+                border-color: mat-color($accent);
+            }
+        }
+    }
+}

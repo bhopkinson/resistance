@@ -1,4 +1,9 @@
-<mat-chip>
-  BH
-  <mat-icon matChipReady>check</mat-icon>
-</mat-chip>
+<mat-chip-list>
+  <mat-chip class="light-blue">
+    <img matChipAvatar src=""/>
+    BH
+    <span>
+      <mat-icon matChipTrailingIcon *ngIf="ready">check</mat-icon>
+    </span>
+  </mat-chip>
+</mat-chip-list>
