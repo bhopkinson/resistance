@@ -7,7 +7,8 @@ import { Player } from 'src/app/models/Player';
   styleUrls: ['./game-card.component.scss']
 })
 export class GameCardComponent implements OnInit {
-  @HostBinding('class') gameCard = 'app-game-card';
+  //@HostBinding('class') gameCard = 'app-game-card';
+  //@HostBinding('ngClass.gt-sm') gameCardGtSm = 'app-game-card--gt-sm';
 
   players: Player[] = [
     {Id: '1', Initials: 'BH', IsReady: false, ImageUrl: 'BH.jpg'},
