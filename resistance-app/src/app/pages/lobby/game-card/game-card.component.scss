@@ -1,0 +1,17 @@
+.gt-sm {
+    margin: 6rem 3rem;
+    height: 600px;
+    width: 400px;
+}
+
+.app-game-card-player-count {
+    font-style: italic;
+    font-size: 0.825rem;
+}
+
+.app-player-chips {
+    display: grid;
+    gap: 32px;
+    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}

@@ -1,4 +1,5 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, Input } from '@angular/core';
+import { Player } from 'src/app/models/Player';
 
 @Component({
   selector: 'app-player-chip',
@@ -8,7 +9,7 @@ import { Component, OnInit, HostBinding } from '@angular/core';
 export class PlayerChipComponent implements OnInit {
   @HostBinding('class') playerChip = 'app-player-chip';
 
-  ready = true;
+  @Input() player: Player;
 
   constructor() { }
 

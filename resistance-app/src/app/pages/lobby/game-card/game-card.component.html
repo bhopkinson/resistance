@@ -1,13 +1,18 @@
-<mat-card class="game-card">
+<mat-card ngClass.gt-sm="gt-sm">
   <mat-card-header>
     <mat-card-title>
       Resistance
+      <span class="app-game-card-player-count">
+        ({{playerCountText}})
+      </span>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-      <ul>
-        <li><app-player-chip></app-player-chip></li>
-        <li><app-player-chip></app-player-chip></li>
-      </ul>
-    </mat-card-content>
+    <div class="app-player-chips">
+      <app-player-chip
+        *ngFor="let player of players"
+        [player]="player">
+      </app-player-chip> 
+    </div>
+  </mat-card-content>
 </mat-card>

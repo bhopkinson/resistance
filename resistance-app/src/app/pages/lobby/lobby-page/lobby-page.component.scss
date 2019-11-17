@@ -1,0 +1,11 @@
+.app-lobby-cards--gt-sm {
+    & > * {
+        height: 400px;
+    }
+}
+
+// app-lobby-cards--lt-md {
+//     & > * {
+//         margin: 6rem;
+//     }
+// }

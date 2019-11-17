@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Player } from 'src/app/models/Player';
 
 @Component({
   selector: 'app-lobby-page',

@@ -1,9 +1,9 @@
 <mat-chip-list>
   <mat-chip class="light-blue">
-    <img matChipAvatar src=""/>
-    BH
+    <img matChipAvatar [src]="player.ImageUrl"/>
+      {{player.Initials}}
     <span>
-      <mat-icon matChipTrailingIcon *ngIf="ready">check</mat-icon>
+      <mat-icon matChipTrailingIcon *ngIf="player.IsReady">check</mat-icon>
     </span>
   </mat-chip>
 </mat-chip-list>

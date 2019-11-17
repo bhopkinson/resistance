@@ -16,7 +16,7 @@ import { LobbyModule } from './pages/lobby';
     AppMaterialModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    LobbyModule
+    LobbyModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
