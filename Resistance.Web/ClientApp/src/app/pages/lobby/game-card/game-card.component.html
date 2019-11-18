@@ -1,0 +1,24 @@
+  <mat-card
+    ngClass.lt-md="lt-md">
+    <mat-card-header>
+      <mat-card-title>
+        Resistance
+        <span class="app-game-card-player-count">
+          ({{playerCountText}})
+        </span>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div
+        gdAlignRows="center"
+        gdGap="2rem"
+        gdAuto="column"
+        gdRows="repeat(6, auto)"
+        gdColumns="repeat(auto-fit, minmax(250px, .75fr))">
+        <app-player-chip
+          *ngFor="let player of players"
+          [player]="player">
+        </app-player-chip>
+      </div>
+    </mat-card-content>
+  </mat-card>

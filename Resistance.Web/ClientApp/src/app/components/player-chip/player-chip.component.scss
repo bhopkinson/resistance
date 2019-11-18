@@ -1,0 +1,25 @@
+.mat-chip {
+    height: 3.1rem;
+    min-width: 160px;
+    width: 100%;
+    border-radius: 50px;
+    font-size: 1.5rem;
+    font-weight: 400;
+
+    .mat-chip-avatar {
+        height: 3.1rem;
+        width: 3.1rem;
+        margin-left: 0;
+        margin-right: 1rem;
+    }
+
+    .mat-chip-trailing-icon {
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin: 0.25rem 1rem;
+    }
+
+    :last-child {
+        margin-left: auto;
+    }
+}

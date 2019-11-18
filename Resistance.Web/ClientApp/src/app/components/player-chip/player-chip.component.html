@@ -1,0 +1,9 @@
+<mat-chip-list>
+  <mat-chip>
+    <img matChipAvatar [src]="player.ImageUrl"/>
+      {{player.Initials}}
+    <span>
+      <mat-icon matChipTrailingIcon *ngIf="player.IsReady">check</mat-icon>
+    </span>
+  </mat-chip>
+</mat-chip-list>

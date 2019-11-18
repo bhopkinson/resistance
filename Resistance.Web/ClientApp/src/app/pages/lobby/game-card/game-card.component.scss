@@ -1,0 +1,15 @@
+.mat-card {
+    margin: 6rem 3rem;
+    height: 600px;
+    width: 600px;
+
+    &.lt-md {
+        width: 100%;
+        margin: 0;
+    }
+}
+
+.app-game-card-player-count {
+    font-style: italic;
+    font-size: 0.825rem;
+}
