@@ -9,11 +9,16 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <div class="app-player-chips">
+      <div
+        gdAlignRows="center"
+        gdGap="2rem"
+        gdAuto="column"
+        gdRows="repeat(6, auto)"
+        gdColumns="repeat(auto-fit, minmax(250px, .75fr))">
         <app-player-chip
           *ngFor="let player of players"
           [player]="player">
-        </app-player-chip> 
+        </app-player-chip>
       </div>
     </mat-card-content>
   </mat-card>

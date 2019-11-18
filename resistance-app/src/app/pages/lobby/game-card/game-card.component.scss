@@ -13,10 +13,3 @@
     font-style: italic;
     font-size: 0.825rem;
 }
-
-.app-player-chips {
-    display: grid;
-    gap: 32px;
-    align-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}

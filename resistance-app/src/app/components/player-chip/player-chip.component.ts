@@ -7,7 +7,6 @@ import { Player } from 'src/app/models/Player';
   styleUrls: ['./player-chip.component.scss']
 })
 export class PlayerChipComponent implements OnInit {
-  @HostBinding('class') playerChip = 'app-player-chip';
 
   @Input() player: Player;
 
