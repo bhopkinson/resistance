@@ -1,6 +1,6 @@
 export class Player {
     Id: string;
-    Initials: string;
+    Name: string;
     ImageUrl: string;
     IsReady: boolean;
 }

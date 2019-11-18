@@ -4,12 +4,12 @@ import { RetryPolicy } from './RetryPolicy';
 import { Subject, ReplaySubject } from 'rxjs';
 import * as signalR from '@microsoft/signalr';
 import { Router } from '@angular/router';
-import { PlayerDetails } from './models/PlayerDetails';
-import { GamePlayer } from './models/GamePlayer';
-import { GameBoard } from './models/GameBoard';
-import { Character } from './models/Character';
-import { Team } from './models/Team';
-import { Role } from './models/Role';
+import { PlayerDetails } from '../models/PlayerDetails';
+import { GamePlayer } from '../models/GamePlayer';
+import { GameBoard } from '../models/GameBoard';
+import { Character } from '../models/Character';
+import { Team } from '../models/Team';
+import { Role } from '../models/Role';
 
 @Injectable({
   providedIn: 'root'
@@ -35,16 +35,11 @@ export class GameService {
     public initials: string;
     public showLeaderScript = this._showLeaderScript.asObservable();
 
-    constructor(private router: Router) {
+    constructor() {
         this.createConnection();
         this.registerOnClientEvents();
         this.registerOnServerEvents();
         this.startConnection();
-    }
-
-    public CreateGame() {
-        this._hubConnection.invoke('CreateGame')
-            .catch(err => console.error(err));
     }
 
     public JoinGame(initials: string) {

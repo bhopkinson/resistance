@@ -3,5 +3,30 @@
     fxLayoutAlign.gt-sm="center"
     fxLayout.lt-md="column"
     fxLayoutAlign.lt-md="center">
-    <app-game-card></app-game-card>
+    <app-game-card
+        *ngFor="let game of (lobbyData | async)?.games"
+        [game]="game">
+    </app-game-card>
 </div>
+<div>
+    There are no games.
+</div>
+<a mat-flat-button color="accent">
+    Create new game
+</a>
+<!-- <mat-card>
+    <mat-card-header
+        fxLayoutAlign="center"
+        *ngIf="!(lobbyData | async)?.games?.length">
+        <mat-card-title>
+            There are no games.
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-footer fxLayoutAlign="center">
+        <mat-card-actions>
+            <a mat-flat-button color="accent">
+                Create new game
+            </a>
+        </mat-card-actions>
+    </mat-card-footer>
+</mat-card> -->

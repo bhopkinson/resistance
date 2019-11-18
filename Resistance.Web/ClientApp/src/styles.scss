@@ -9,9 +9,11 @@
 @include mat-core();
 
 @import './themes/resistance-theme.scss';
+@import './app/pages/lobby/lobby-page/lobby-page-theme.scss';
 @import './app/components/player-chip/player-chip-theme.scss';
 
 @mixin custom-theme($theme) {
+    @include lobby-page-theme($theme);
     @include player-chip-theme($theme);
 }
 
