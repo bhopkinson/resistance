@@ -1,4 +1,5 @@
 ﻿using Resistance.Web.Events;
+using Resistance.Web.MediationModels;
 using Resistance.Web.Services;
 using SimpleMediator.Core;
 using SimpleMediator.Events;

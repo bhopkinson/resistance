@@ -1,5 +1,4 @@
 ﻿using Resistance.Web.Dispatchers.DispatchModels;
-using Resistance.GameModels;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,6 +6,7 @@ using Resistance.Web.Services;
 using SimpleMediator.Commands;
 using SimpleMediator.Core;
 using Resistance.Web.Commands;
+using Resistance.Web.MediationModels;
 
 namespace Resistance.Web.Handlers
 {
@@ -31,12 +31,12 @@ namespace Resistance.Web.Handlers
             var gameContext = mediationContext as GameContext;
             var game = _gameManager.GetGame(command.GameCode);
 
-            var player = new Player()
+            var player = new GameModels.Player()
             {
-                Initials = command.PlayerInitials
+                Name = command.PlayerInitials
             };
 
-            game.Players.TryAdd(player.Initials, player);
+            game.Players.TryAdd(player.Name, player);
 
             _gameConnectionIdStore.StorePlayerConnectionIdForGame(command.GameCode, command.PlayerInitials, gameContext.ConnectionId);
 
@@ -45,7 +45,7 @@ namespace Resistance.Web.Handlers
 
             // TODO: refactor into own handler
             var playerDetails = game.Players.Values
-                .Select(p => new PlayerDetails { Intials = p.Initials, Ready = p.Ready })
+                .Select(p => new PlayerDetails { Intials = p.Name, Ready = p.IsReady })
                 .ToList();
 
             await _clientMessageDispatcherFactory

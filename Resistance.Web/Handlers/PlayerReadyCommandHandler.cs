@@ -7,6 +7,7 @@ using Resistance.Web.Services;
 using SimpleMediator.Commands;
 using SimpleMediator.Core;
 using Resistance.Web.Commands;
+using Resistance.Web.MediationModels;
 
 namespace Resistance.Web.Handlers
 {
@@ -28,15 +29,15 @@ namespace Resistance.Web.Handlers
                 .SingleOrDefault()
                 .Value;
 
-            player.Ready = command.Ready;
+            player.IsReady = command.Ready;
 
             //var playerDetails = _mapper.ProjectTo<Dispatchers.Models.PlayerDetails>(request.GameState.Players.Values.AsQueryable()).ToList();
-            var playerDetails = gameContext.Game.Players.Values.Select(p => new PlayerDetails { Intials = p.Initials, Ready = p.Ready }).ToList();
+            var playerDetails = gameContext.Game.Players.Values.Select(p => new PlayerDetails { Intials = p.Name, Ready = p.IsReady }).ToList();
             await _clientMessageDispatcherFactory
                 .CreateClientMessageDispatcher(x => x.UpdatePlayersList(playerDetails))
                 .SendToAllGameClients(gameContext.GameCode);
 
-            var allPlayersReady = gameContext.Game.Players.All(o => o.Value.Ready);
+            var allPlayersReady = gameContext.Game.Players.All(o => o.Value.IsReady);
 
             if (allPlayersReady && gameContext.Game.Players.Count > 4 || gameContext.Game.Players.Count == 1)
             {

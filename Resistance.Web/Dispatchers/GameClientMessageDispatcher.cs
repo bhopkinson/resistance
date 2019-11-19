@@ -6,15 +6,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Resistance.Web.Services
+namespace Resistance.Web.Dispatchers
 {
-    public class ClientMessageDispatcher : IClientMessageDispatcher
+    public class GameClientMessageDispatcher : IClientMessageDispatcher
     {
         private readonly IHubContext<GameHub, IGameHubClient> _gameHubContext;
         private readonly IGameConnectionIdStore _gameConnectionIdStore;
         private readonly Func<IGameHubClient, Task> _clientMethod;
 
-        public ClientMessageDispatcher(
+        public GameClientMessageDispatcher(
            IHubContext<GameHub, IGameHubClient> gameHubContext,
            IGameConnectionIdStore gameConnectionIdStore,
            Func<IGameHubClient, Task> clientMethod)

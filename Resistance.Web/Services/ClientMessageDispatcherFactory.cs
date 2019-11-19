@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Resistance.Web.Dispatchers;
 using Resistance.Web.Hubs;
-using Resistance.Web.Services;
 using System;
 using System.Threading.Tasks;
 
@@ -8,18 +8,24 @@ namespace Resistance.Web.Services
 {
     public class ClientMessageDispatcherFactory : IClientMessageDispatcherFactory
     {
+        private readonly IHubContext<LobbyHub, ILobbyHubClient> _lobbyHubClient;
         private readonly IHubContext<GameHub, IGameHubClient> _gameHubContext;
         private readonly IGameConnectionIdStore _gameConnectionIdStore;
 
         public ClientMessageDispatcherFactory(
+            IHubContext<LobbyHub, ILobbyHubClient> lobbyHubClient,
             IHubContext<GameHub, IGameHubClient> gameHubContext,
             IGameConnectionIdStore gameConnectionIdStore)
         {
+            _lobbyHubClient = lobbyHubClient;
             _gameHubContext = gameHubContext;
             _gameConnectionIdStore = gameConnectionIdStore;
         }
 
-        public IClientMessageDispatcher CreateClientMessageDispatcher(Func<IGameHubClient, Task> clientMethod)
-            => new ClientMessageDispatcher(_gameHubContext, _gameConnectionIdStore, clientMethod);
+        public LobbyClientMessageDispatcher CreateClientMessageDispatcher(Func<ILobbyHubClient, Task> clientMethod)
+            => new LobbyClientMessageDispatcher(_lobbyHubClient, clientMethod);
+
+        public GameClientMessageDispatcher CreateClientMessageDispatcher(Func<IGameHubClient, Task> clientMethod)
+            => new GameClientMessageDispatcher(_gameHubContext, _gameConnectionIdStore, clientMethod);
     }
 }

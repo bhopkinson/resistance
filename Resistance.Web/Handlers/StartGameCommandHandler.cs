@@ -7,6 +7,7 @@ using Resistance.Web.Services;
 using SimpleMediator.Commands;
 using Resistance.Web.Commands;
 using SimpleMediator.Core;
+using Resistance.Web.MediationModels;
 
 namespace Resistance.Web.Handlers
 {
@@ -32,14 +33,14 @@ namespace Resistance.Web.Handlers
         protected override async Task HandleCommandAsync(StartGameCommand command, IMediationContext mediationContext, CancellationToken cancellationToken)
         {
             var gameContext = mediationContext as GameContext;
-            var gameReady = gameContext.Game.Players.All(o => o.Value.Ready);
+            var gameReady = gameContext.Game.Players.All(o => o.Value.IsReady);
 
             // TODO: Add validation
 
             gameContext.Game.CurrentState = GameState.Started;
             foreach (var playerReset in gameContext.Game.Players)
             {
-                playerReset.Value.Ready = false;
+                playerReset.Value.IsReady = false;
             }
 
             var players = gameContext.Game.Players.Values.ToList();
@@ -56,7 +57,7 @@ namespace Resistance.Web.Handlers
 
                 await _clientMessageDispatcherFactory
                     .CreateClientMessageDispatcher(x => x.ShowCharacter(playerCharacterNotification))
-                    .SendToPlayerInGame(gameContext.GameCode, player.Initials);
+                    .SendToPlayerInGame(gameContext.GameCode, player.Name);
             }
 
             gameContext.Game.SortedPlayers = _playerOrderInitialisation.GetSortedPlayers(players);

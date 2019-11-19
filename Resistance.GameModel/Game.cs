@@ -1,4 +1,5 @@
 ﻿using Resistance.GameModels.enums;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
@@ -9,6 +10,7 @@ namespace Resistance.GameModels
         public Game(string code)
         {
             Code = code;
+            Created = DateTimeOffset.Now;
             Players = new ConcurrentDictionary<string, Player>();
             SortedPlayers = new SortedSet<Player>();
             Missions = new List<Mission>();
@@ -16,6 +18,7 @@ namespace Resistance.GameModels
         }
 
         public string Code { get; set; }
+        public DateTimeOffset Created { get; set; }
         public ConcurrentDictionary<string, Player> Players { get; set; }
         public SortedSet<Player> SortedPlayers { get; set; }
         public IEnumerable<Mission> Missions { get; set; }

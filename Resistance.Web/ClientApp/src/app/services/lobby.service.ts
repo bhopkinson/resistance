@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import * as signalR from '@microsoft/signalr';
 import { RetryPolicy } from './RetryPolicy';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { Lobby } from '../models/Lobby';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class LobbyService {
 
     private _lobbyData = new Subject<Lobby>();
 
-    public lobbyData = this._lobbyData.asObservable();
+    public lobbyData: Observable<Lobby> = this._lobbyData;
 
     constructor() {
         this.createConnection();

@@ -30,7 +30,6 @@ namespace Resistance.Web
         {
             var assembly = Assembly.GetExecutingAssembly();
             services.AddAutoMapper(assembly);
-            //services.AddMediatR(assembly);
 
             services
                 .AddSimpleMediator()

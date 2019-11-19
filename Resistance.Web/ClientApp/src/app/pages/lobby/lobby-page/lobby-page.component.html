@@ -8,12 +8,20 @@
         [game]="game">
     </app-game-card>
 </div>
-<div>
-    There are no games.
+<div
+    class="new-game"
+    gdAuto="rows"
+    gdGap="2rem"
+    fxLayoutAlign="center center">
+    <h1
+        *ngIf=""
+        class="no-game">
+        There are no games.
+    </h1>
+    <a mat-flat-button color="accent">
+        Create new game
+    </a>
 </div>
-<a mat-flat-button color="accent">
-    Create new game
-</a>
 <!-- <mat-card>
     <mat-card-header
         fxLayoutAlign="center"

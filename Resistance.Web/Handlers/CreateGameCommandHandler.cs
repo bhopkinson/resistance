@@ -11,20 +11,20 @@ namespace Resistance.Web.Handlers
 {
     public class CreateGameCommandHandler : CommandHandler<CreateGameCommand>
     {
-        private IGameManager _gameManager;
+        private ILobbyService _lobbyService;
         private IClientMessageDispatcherFactory _clientMessageDispatcherFactory;
 
-        public CreateGameCommandHandler(IGameManager gameManager, IClientMessageDispatcherFactory clientMessageDispatcherFactory)
+        public CreateGameCommandHandler(ILobbyService lobbyService, IClientMessageDispatcherFactory clientMessageDispatcherFactory)
         {
-            _gameManager = gameManager;
+            _lobbyService = lobbyService;
             _clientMessageDispatcherFactory = clientMessageDispatcherFactory;
         }
 
         protected override async Task HandleCommandAsync(CreateGameCommand command, IMediationContext mediationContext, CancellationToken cancellationToken)
         {
-            var gameContext = mediationContext as GameContext;
+            var lobbyContext = mediationContext as LobbyContext;
 
-            var code = _gameManager.CreateGame();
+            var code = _lobbyService.CreateGame();
 
             var receipt = new CreateGameReceipt
             {
@@ -33,7 +33,9 @@ namespace Resistance.Web.Handlers
 
             await _clientMessageDispatcherFactory
                     .CreateClientMessageDispatcher(x => x.CreateGameReceipt(receipt))
-                    .SendToConnectionId(gameContext.ConnectionId);
+                    .SendToConnectionId(lobbyContext.ConnectionId);
+
+            await _lobbyService.SendLobbyUpdateToConnectedClients();
         }
     }
 }

@@ -9,9 +9,8 @@ using Resistance.Web.Hubs.Receipts;
 
 namespace Resistance.Web.Hubs
 {
-    public interface IGameHubClient
+    public interface IGameHubClient : IHubClient
     {
-        Task CreateGameReceipt(CreateGameReceipt receipt);
         Task UpdatePlayersList(List<PlayerDetails> players);
         Task Countdown(bool countdown);
         Task GameBoardChange(List<GameBoardMission> missions, int voteCount, string leader);
