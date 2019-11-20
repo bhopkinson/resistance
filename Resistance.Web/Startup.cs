@@ -7,10 +7,15 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MQTTnet;
+using MQTTnet.AspNetCore;
+using MQTTnet.Server;
 using Resistance.Web.Hubs;
 using Resistance.Web.Services;
 using SimpleMediator.Extensions.Microsoft.DependencyInjection;
+using System;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Resistance.Web
 {
@@ -28,6 +33,15 @@ namespace Resistance.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var mqttServerOptions = new MqttServerOptionsBuilder()
+                .WithoutDefaultEndpoint()
+                .Build();
+
+            services
+                .AddHostedMqttServer(mqttServerOptions)
+                .AddMqttConnectionHandler()
+                .AddConnections();
+
             var assembly = Assembly.GetExecutingAssembly();
             services.AddAutoMapper(assembly);
 
@@ -88,6 +102,10 @@ namespace Resistance.Web
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapConnectionHandler<MqttConnectionHandler>("/mqtt", options =>
+                {
+                    options.WebSockets.SubProtocolSelector = MQTTnet.AspNetCore.ApplicationBuilderExtensions.SelectSubProtocol;
+                });
                 endpoints.MapHub<LobbyHub>("/lobby");
                 endpoints.MapHub<GameHub>("/game");
                 endpoints.MapControllerRoute(
