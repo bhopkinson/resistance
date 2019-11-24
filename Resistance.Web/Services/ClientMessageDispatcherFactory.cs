@@ -23,9 +23,9 @@ namespace Resistance.Web.Services
         }
 
         public LobbyClientMessageDispatcher CreateClientMessageDispatcher(Func<ILobbyHubClient, Task> clientMethod)
-            => new LobbyClientMessageDispatcher(_lobbyHubClient, clientMethod);
+            => new LobbyClientMessageDispatcher(null, _lobbyHubClient, clientMethod);
 
-        public GameClientMessageDispatcher CreateClientMessageDispatcher(Func<IGameHubClient, Task> clientMethod)
-            => new GameClientMessageDispatcher(_gameHubContext, _gameConnectionIdStore, clientMethod);
+        public ClientMessageDispatcher CreateClientMessageDispatcher(Func<IGameHubClient, Task> clientMethod)
+            => new ClientMessageDispatcher(null);
     }
 }

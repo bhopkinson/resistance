@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Resistance.Web.Dispatchers;
 using Resistance.Web.Dispatchers.DispatchModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,41 +10,34 @@ namespace Resistance.Web.Services
 {
     public class LobbyService : ILobbyService
     {
-        private MapperConfiguration _mapperConfig;
+        private IMapper _mapper;
         private IGameManager _gameManager;
-        private IClientMessageDispatcherFactory _clientMessageDispatcherFactory;
-
+        private IClientMessageDispatcher _clientMessageDispatcher;
 
         public LobbyService(
-            MapperConfiguration mapperConfig,
+            IMapper mapper,
             IGameManager gameManager,
-            IClientMessageDispatcherFactory clientMessageDispatcherFactory)
+            IClientMessageDispatcher clientMessageDispatcher)
         {
-            _mapperConfig = mapperConfig;
+            _mapper = mapper;
             _gameManager = gameManager;
-            _clientMessageDispatcherFactory = clientMessageDispatcherFactory;
+            _clientMessageDispatcher = clientMessageDispatcher;
         }
 
         public string CreateGame() =>
             _gameManager.CreateGame();
 
-        public async Task SendLobbyUpdateToConnectedClients()
-        {
-            var lobby = new Lobby
+        public async Task Publish() =>
+            await _clientMessageDispatcher.Publish(new Lobby
             {
                 Games = GetGames()
-            };
-
-            await _clientMessageDispatcherFactory
-                    .CreateClientMessageDispatcher(x => x.UpdateLobby(lobby))
-                    .Send();
-        }
+            });
 
         private ICollection<Game> GetGames() =>
-            _gameManager.GetAllGames()
-                    .AsQueryable()
-                    .OrderBy(g => g.Created)
-                    .ProjectTo<Game>(_mapperConfig)
-                    .ToList();
+            _mapper.ProjectTo<Game>(
+                _gameManager.GetAllGames()
+                .AsQueryable()
+                .OrderBy(g => g.Created))
+            .ToList();
     }
 }

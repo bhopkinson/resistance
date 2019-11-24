@@ -55,9 +55,9 @@ namespace Resistance.Web.Handlers
                     Team = player.Character.Team
                 };
 
-                await _clientMessageDispatcherFactory
-                    .CreateClientMessageDispatcher(x => x.ShowCharacter(playerCharacterNotification))
-                    .SendToPlayerInGame(gameContext.GameCode, player.Name);
+                //await _clientMessageDispatcherFactory
+                //    .CreateClientMessageDispatcher(x => x.ShowCharacter(playerCharacterNotification))
+                //    .SendToPlayerInGame(gameContext.GameCode, player.Name);
             }
 
             gameContext.Game.SortedPlayers = _playerOrderInitialisation.GetSortedPlayers(players);

@@ -11,7 +11,7 @@ namespace Resistance.GameModels
         {
             Code = code;
             Created = DateTimeOffset.Now;
-            Players = new ConcurrentDictionary<string, Player>();
+            Players = new ConcurrentDictionary<Guid, Player>();
             SortedPlayers = new SortedSet<Player>();
             Missions = new List<Mission>();
             CurrentState = GameState.GamePending;
@@ -19,7 +19,7 @@ namespace Resistance.GameModels
 
         public string Code { get; set; }
         public DateTimeOffset Created { get; set; }
-        public ConcurrentDictionary<string, Player> Players { get; set; }
+        public ConcurrentDictionary<Guid, Player> Players { get; set; }
         public SortedSet<Player> SortedPlayers { get; set; }
         public IEnumerable<Mission> Missions { get; set; }
         public GameState CurrentState { get; set; }

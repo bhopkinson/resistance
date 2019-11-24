@@ -4,6 +4,6 @@ namespace Resistance.Web.Dispatchers.DispatchModels
 {
     public class Lobby
     {
-        public ICollection<Game> Games;
+        public ICollection<Game> Games { get; set; }
     }
 }

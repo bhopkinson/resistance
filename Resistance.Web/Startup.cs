@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using MQTTnet;
 using MQTTnet.AspNetCore;
 using MQTTnet.Server;
+using Resistance.Web.Dispatchers;
 using Resistance.Web.Hubs;
 using Resistance.Web.Services;
 using SimpleMediator.Extensions.Microsoft.DependencyInjection;
@@ -61,6 +62,8 @@ namespace Resistance.Web
             services
                 .AddTransient<ICodeGenerator, CodeGenerator>()
                 .AddTransient<ICharacterAssignment, CharacterAssignment>()
+                .AddTransient<IClientMessageDispatcher, ClientMessageDispatcher>()
+                .AddTransient<ILobbyService, LobbyService>()
                 .AddTransient<IMissionInitialisation, MissionInitialisation>()
                 .AddTransient<IPlayerOrderInitialisation, PlayerOrderInitialisation>();
 

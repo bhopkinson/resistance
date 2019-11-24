@@ -25,13 +25,13 @@ namespace Resistance.Web.Hubs
         }
 
         public async Task CreateGame() =>
-            await Handle(new CreateGameCommand());
+            await Handle(new CreateGameMessage());
 
         public async Task JoinGame(GamePlayer player) =>
-            await Handle(new JoinGameCommand
+            await Handle(new JoinGameMessage
             {
                 GameCode = player.GameId,
-                PlayerInitials = player.PlayerInitials
+                PlayerName = player.PlayerInitials
             });
 
         public async Task PlayerReady(bool ready) =>
