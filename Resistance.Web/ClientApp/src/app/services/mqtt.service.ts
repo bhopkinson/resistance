@@ -2,12 +2,19 @@ import { Injectable } from '@angular/core';
 import {
     IMqttMessage,
     MqttModule,
-    IMqttServiceOptions
+    IMqttServiceOptions,
+    MqttService
   } from 'ngx-mqtt';
+import { LobbyModule } from '../pages/lobby';
 
 @Injectable()
 export class MyMqttService {
 
-constructor(private mqttService: MqttService) { }
+  constructor() { }
+ 
+  public ConnectLobby(){
+
+    //this.mqttService.connect()
+  }
 
 }

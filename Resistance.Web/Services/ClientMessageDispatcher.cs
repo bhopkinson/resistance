@@ -1,18 +1,11 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using MQTTnet;
-using MQTTnet.Protocol;
+﻿using MQTTnet.Protocol;
 using MQTTnet.Server;
+using Resistance.Web.Dispatchers;
 using Resistance.Web.Dispatchers.DispatchModels;
-using Resistance.Web.Hubs;
-using Resistance.Web.Services;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Resistance.Web.Dispatchers
+namespace Resistance.Web.Services
 {
     public class ClientMessageDispatcher : IClientMessageDispatcher
     {

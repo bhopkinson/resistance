@@ -7,16 +7,12 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MQTTnet;
 using MQTTnet.AspNetCore;
 using MQTTnet.Server;
-using Resistance.Web.Dispatchers;
 using Resistance.Web.Hubs;
 using Resistance.Web.Services;
 using SimpleMediator.Extensions.Microsoft.DependencyInjection;
-using System;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Resistance.Web
 {
@@ -69,8 +65,7 @@ namespace Resistance.Web
 
             services
                 .AddSingleton<IGameManager, GameManager>()
-                .AddSingleton<IGameConnectionIdStore, GameConnectionIdStore>()
-                .AddSingleton<IClientMessageDispatcherFactory, ClientMessageDispatcherFactory>();
+                .AddSingleton<IGameConnectionIdStore, GameConnectionIdStore>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

@@ -4,6 +4,16 @@ import * as signalR from '@microsoft/signalr';
 import { RetryPolicy } from './RetryPolicy';
 import { Subject, Observable } from 'rxjs';
 import { Lobby } from '../models/Lobby';
+import { IMqttServiceOptions, MqttService } from 'ngx-mqtt';
+import { LobbyModule } from '../pages/lobby';
+
+export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
+    hostname: "localhost",
+    port: 5000,
+    protocol: "ws",
+    //username: "fakhri",
+    //password: "1234"
+};
 
 @Injectable()
 export class LobbyService {
@@ -15,7 +25,15 @@ export class LobbyService {
 
     public lobbyData: Observable<Lobby> = this._lobbyData;
 
-    constructor() {
+    constructor(
+        private mqttService: MqttService,
+        private location: Location) {
+        
+        var path = this.location.pathname;
+        console.log("pathname: " + path)
+        this.mqttService.connect(MQTT_SERVICE_OPTIONS);
+
+
         this.createConnection();
         this.registerOnClientEvents();
         this.registerOnServerEvents();

@@ -22,9 +22,6 @@ namespace Resistance.Web.Services
             _gameConnectionIdStore = gameConnectionIdStore;
         }
 
-        public LobbyClientMessageDispatcher CreateClientMessageDispatcher(Func<ILobbyHubClient, Task> clientMethod)
-            => new LobbyClientMessageDispatcher(null, _lobbyHubClient, clientMethod);
-
         public ClientMessageDispatcher CreateClientMessageDispatcher(Func<IGameHubClient, Task> clientMethod)
             => new ClientMessageDispatcher(null);
     }

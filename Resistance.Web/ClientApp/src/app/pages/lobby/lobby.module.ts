@@ -5,17 +5,21 @@ import { GameCardComponent } from '../../components/game-card/game-card.componen
 import { AppMaterialModule } from 'src/app/app-material.module';
 import { PlayerChipComponent } from 'src/app/components/player-chip/player-chip.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MqttService } from 'ngx-mqtt';
 
 @NgModule({
   imports: [
     CommonModule,
     AppMaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   declarations: [
     LobbyPageComponent,
     GameCardComponent,
     PlayerChipComponent
+  ],
+  providers: [
+    MqttService
   ]
 })
 export class LobbyModule { }
