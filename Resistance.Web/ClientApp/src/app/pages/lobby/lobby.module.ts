@@ -6,15 +6,19 @@ import { AppMaterialModule } from 'src/app/app-material.module';
 import { PlayerChipComponent } from 'src/app/components/player-chip/player-chip.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MqttService } from 'ngx-mqtt';
+import { AppRoutingModule } from '../../app-routing.module';
+import { NewGameComponent } from './new-game/new-game.component';
 
 @NgModule({
   imports: [
     CommonModule,
     AppMaterialModule,
+    AppRoutingModule,
     FlexLayoutModule,
   ],
   declarations: [
     LobbyPageComponent,
+    NewGameComponent,
     GameCardComponent,
     PlayerChipComponent
   ],

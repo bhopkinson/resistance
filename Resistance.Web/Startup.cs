@@ -11,8 +11,10 @@ using MQTTnet.AspNetCore;
 using MQTTnet.Server;
 using Resistance.Web.Hubs;
 using Resistance.Web.Services;
+using Resistance.Web.Services.Mqtt;
 using SimpleMediator.Extensions.Microsoft.DependencyInjection;
 using System.Reflection;
+using MqttServerOptions = Resistance.Web.Services.Mqtt.MqttServerOptions;
 
 namespace Resistance.Web
 {
@@ -30,12 +32,10 @@ namespace Resistance.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var mqttServerOptions = new MqttServerOptionsBuilder()
-                .WithoutDefaultEndpoint()
-                .Build();
-
             services
-                .AddHostedMqttServer(mqttServerOptions)
+                .AddSingleton<IMqttServerConnectionValidator, MqttServerConnectionValidator>()
+                .AddSingleton<IMqttServerSubscriptionInterceptor, MqttServerSubscriptionInterceptor>()
+                .AddHostedMqttServer<MqttServerOptions>()
                 .AddMqttConnectionHandler()
                 .AddConnections();
 

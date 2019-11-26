@@ -7,10 +7,12 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LobbyModule } from './pages/lobby';
 import { MqttModule, IMqttServiceOptions } from 'ngx-mqtt';
+import { HttpClientModule } from '@angular/common/http';
+import { GameModule } from './pages/game';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: 'localhost',
-  port: 9001,
+  port: 5000,
   path: '/mqtt',
   connectOnCreate: false
 };
@@ -25,7 +27,9 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AppRoutingModule,
     BrowserAnimationsModule,
     LobbyModule,
-    MqttModule
+    GameModule,
+    HttpClientModule,
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
   ],
   providers: [],
   bootstrap: [AppComponent]

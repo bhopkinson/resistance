@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-import { RetryPolicy } from './RetryPolicy';
 import { Subject, ReplaySubject } from 'rxjs';
 import * as signalR from '@microsoft/signalr';
 import { Router } from '@angular/router';
@@ -62,7 +61,6 @@ export class GameService {
     private createConnection() {
         this._hubConnection = new HubConnectionBuilder()
             .withUrl(window.location.href + 'game')
-            .withAutomaticReconnect(new RetryPolicy())
             .configureLogging(signalR.LogLevel.Information)
         .build();
     }

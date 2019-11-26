@@ -1,7 +1,11 @@
-﻿using MQTTnet.Protocol;
+﻿using MessagePack;
+using MessagePack.Resolvers;
+using MQTTnet;
+using MQTTnet.Protocol;
 using MQTTnet.Server;
 using Resistance.Web.Dispatchers;
 using Resistance.Web.Dispatchers.DispatchModels;
+using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -19,12 +23,26 @@ namespace Resistance.Web.Services
         public async Task Publish(Lobby lobby) =>
             await Publish(Topics.LOBBY, lobby);
 
-        private async Task Publish(string topic, object messageObject) =>
-            await _mqttServer.PublishAsync(
-                topic,
-                JsonSerializer.Serialize(messageObject),
-                MqttQualityOfServiceLevel.AtLeastOnce,
-                retain: true);
+        private async Task Publish(string topic, dynamic @object)
+        {
+            var bytes = GetBytes(@object);
+            var message = BuildMqttApplicationMessage(topic, bytes);
+            await PublishMessage(message);
+        }
+
+        private byte[] GetBytes(dynamic @object) =>
+            MessagePackSerializer.Serialize(@object, ContractlessStandardResolver.Instance);
+
+        private MqttApplicationMessage BuildMqttApplicationMessage(string topic, byte[] bytes) =>
+            new MqttApplicationMessageBuilder()
+                .WithTopic(topic)
+                .WithPayload(bytes)
+                .WithAtLeastOnceQoS()
+                .WithRetainFlag()
+                .Build();
+
+        private async Task PublishMessage(MqttApplicationMessage message) =>
+            await _mqttServer.PublishAsync(message);
 
         //public async Task SendToPlayerInGame(string gameCode, string playerId) =>
         //    await SendToConnectionId(

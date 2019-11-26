@@ -24,7 +24,10 @@ export class GameCardComponent implements OnInit {
   //   // {Id: '11', Initials: 'BD', IsReady: true, ImageUrl: 'BD.jpg'},
   //];
 
-  playerCountText = `${this.game.players.length} player${this.game.players.length === 1 ? '' : 's'}`;
+  public getPlayerCountText()
+  {
+    return `${this.game.Players.length} player${this.game.Players.length === 1 ? '' : 's'}`;
+  }
 
   constructor() { }
 

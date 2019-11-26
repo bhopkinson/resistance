@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LobbyService } from '../../../services/lobby.service';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription, Subject, ReplaySubject } from 'rxjs';
 import { Lobby } from '../../../models/Lobby';
-import { Utils } from '../../../utils';
+import { Game } from 'src/app/models/Game';
 
 @Component({
   selector: 'app-lobby-page',
@@ -12,17 +12,19 @@ import { Utils } from '../../../utils';
 })
 export class LobbyPageComponent implements OnInit {
 
-  public lobbyData: BehaviorSubject<Lobby>;
-  
-  public shouldShowNoGamesMessage() {
-    return this.lobbyData.value.games.length > 0;
-  }
+  public games = new Subject<Observable<Game>[]>();
+  private gamesSubscription: Subscription;
 
-  constructor(lobbyService: LobbyService) {
-    this.lobbyData = Utils.convertObservableToBehaviorSubject(lobbyService.lobbyData, null);
-  }
+  constructor(private lobbyService: LobbyService) { }
 
   ngOnInit() {
+    this.gamesSubscription = this.lobbyService.games.subscribe(games => {
+      this.games.next(games);
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.gamesSubscription.unsubscribe();
   }
 
 }

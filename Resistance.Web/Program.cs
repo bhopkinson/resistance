@@ -1,3 +1,5 @@
+using MessagePack;
+using MessagePack.Resolvers;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 

@@ -1,82 +1,100 @@
 import { Injectable } from '@angular/core';
-import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-import * as signalR from '@microsoft/signalr';
-import { RetryPolicy } from './RetryPolicy';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, Subscription, BehaviorSubject, from } from 'rxjs';
 import { Lobby } from '../models/Lobby';
-import { IMqttServiceOptions, MqttService } from 'ngx-mqtt';
-import { LobbyModule } from '../pages/lobby';
+import { IMqttServiceOptions, MqttService, IMqttMessage } from 'ngx-mqtt';
+import { decode } from "@msgpack/msgpack";
+import { HttpClient } from '@angular/common/http';
+import { Game } from '../models/Game';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     hostname: "localhost",
     port: 5000,
     protocol: "ws",
-    //username: "fakhri",
-    //password: "1234"
+    username: "lobby"
 };
 
 @Injectable()
 export class LobbyService {
 
-    private _hubConnection: HubConnection;
-    private _connectionEstablished = new Subject<Boolean>(); 
+    private _gamesSubscription: Subscription;
+    private _lobbySubsciption: Subscription;
+    private _lobbyGamesSubscription: Subscription;
 
-    private _lobbyData = new Subject<Lobby>();
+    public games = new Observable<Observable<Game>[]>();
 
-    public lobbyData: Observable<Lobby> = this._lobbyData;
+    private _games = new BehaviorSubject<Map<string, Subject<Game>>>(new Map<string, Subject<Game>>());
 
     constructor(
-        private mqttService: MqttService,
-        private location: Location) {
+        private http: HttpClient,
+        private mqtt: MqttService) {
         
-        var path = this.location.pathname;
-        console.log("pathname: " + path)
-        this.mqttService.connect(MQTT_SERVICE_OPTIONS);
-
-
-        this.createConnection();
-        this.registerOnClientEvents();
-        this.registerOnServerEvents();
-        this.startConnection();
+        this.mqtt.connect(MQTT_SERVICE_OPTIONS);
+        this.registerSubscriptions();
+    }
+    
+    public ngOnDestroy(): void {
+        this._gamesSubscription.unsubscribe();
+        this._lobbySubsciption.unsubscribe();
+        this._lobbyGamesSubscription.unsubscribe();
     }
 
-    public CreateGame() {
-        this._hubConnection.invoke('CreateGame')
-            .catch(err => console.error(err));
+    public createGame(): Observable<string> {
+        return this.http.post<string>("api/game/create", null);
     }
 
-    private startConnection(): void {
-        this._hubConnection
-        .start()
-        .then(() => {
-            this._connectionEstablished.next(true);
-        })
-        .catch(err => {
-            setTimeout(function () { this.startConnection(); }, 1000);
-        }); 
-    }
+    private registerSubscriptions(): void {
+        
+        this._gamesSubscription = this._games.subscribe(map => this.games.next());
 
-    private createConnection() {
-        this._hubConnection = new HubConnectionBuilder()
-            .withUrl(window.location.href + 'lobby')
-            .withAutomaticReconnect(new RetryPolicy())
-            .configureLogging(signalR.LogLevel.Information)
-        .build();
-    }
+        this._lobbySubsciption = this.mqtt.observe("lobby").subscribe((message: IMqttMessage) => {
+            // Fresh list of game codes from server
+            const freshGameCodes = decode(message.payload) as string[];
 
-    private registerOnClientEvents(): void {
-        this._hubConnection.onreconnecting(() => {
-            this._connectionEstablished.next(false);
+            // New map of games
+            const newGameMap = new Map<string, Subject<Game>>();
+
+            // Add all existing games into the new map
+            this._games.getValue().forEach((game, code) => {
+                if (freshGameCodes.includes(code)) {
+                    newGameMap.set(code, game);
+                }
+            });
+
+            // Get new game codes and add them to the map
+            const newGameCodes = freshGameCodes.filter(code => !newGameMap.has(code));
+            newGameCodes.forEach(code => {
+                newGameMap.set(code, new Subject<Game>())
+            });
+
+            // Push updated map
+            this._games.next(newGameMap);
         });
 
-        this._hubConnection.onclose(() => {
-            this._connectionEstablished.next(false);
+        this._lobbyGamesSubscription = this.mqtt.observe("lobby/+").subscribe((message: IMqttMessage) => {
+            const gameCode = message.topic.split('/')[1];
+            const game = this._games.getValue().get(gameCode);
+            game.next(decode(message.payload) as Game);
         });
     }
 
-    private registerOnServerEvents(): void {
-        this._hubConnection.on('UpdateLobby', (data: Lobby) => {
-            this._lobbyData.next(data);
-        });
-    }
+    // public CreateGame() {
+    //     this._hubConnection.invoke('CreateGame')
+    //         .catch(err => console.error(err));
+    // }
+
+    // private registerOnClientEvents(): void {
+    //     this._hubConnection.onreconnecting(() => {
+    //         this._connectionEstablished.next(false);
+    //     });
+
+    //     this._hubConnection.onclose(() => {
+    //         this._connectionEstablished.next(false);
+    //     });
+    // }
+
+    // private registerOnServerEvents(): void {
+    //     this._hubConnection.on('UpdateLobby', (data: Lobby) => {
+    //         this._lobbyData.next(data);
+    //     });
+    // }
 }

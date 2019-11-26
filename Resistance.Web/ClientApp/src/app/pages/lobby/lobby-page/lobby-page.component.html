@@ -4,7 +4,7 @@
     fxLayout.lt-md="column"
     fxLayoutAlign.lt-md="center">
     <app-game-card
-        *ngFor="let game of (lobbyData | async)?.games"
+        *ngFor="let game of (games | async)"
         [game]="game">
     </app-game-card>
 </div>
@@ -14,11 +14,11 @@
     gdGap="2rem"
     fxLayoutAlign="center center">
     <h1
-        *ngIf=""
+        *ngIf="!(games | async)?.length"
         class="no-game">
         There are no games.
     </h1>
-    <a mat-flat-button color="accent">
+    <a mat-flat-button color="accent" [routerLink]="['/new']">
         Create new game
     </a>
 </div>
