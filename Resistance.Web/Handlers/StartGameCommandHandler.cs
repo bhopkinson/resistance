@@ -16,18 +16,15 @@ namespace Resistance.Web.Handlers
         private readonly ICharacterAssignment _characterAssignment;
         private readonly IMissionInitialisation _missionInitialisation;
         private readonly IPlayerOrderInitialisation _playerOrderInitialisation;
-        private readonly IClientMessageDispatcherFactory _clientMessageDispatcherFactory;
 
         public StartGameCommandHandler(
             ICharacterAssignment characterAssignment,
             IMissionInitialisation missionInitialisation,
-            IPlayerOrderInitialisation playerOrderInitialisation,
-            IClientMessageDispatcherFactory clientMessageDispatcherFactory)
+            IPlayerOrderInitialisation playerOrderInitialisation)
         {
             _characterAssignment = characterAssignment;
             _missionInitialisation = missionInitialisation;
             _playerOrderInitialisation = playerOrderInitialisation;
-            _clientMessageDispatcherFactory = clientMessageDispatcherFactory;
         }
 
         protected override async Task HandleCommandAsync(StartGameCommand command, IMediationContext mediationContext, CancellationToken cancellationToken)

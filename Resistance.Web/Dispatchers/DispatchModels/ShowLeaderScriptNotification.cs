@@ -1,8 +1,6 @@
-﻿using MediatR;
-
-namespace Resistance.Web.Dispatchers.DispatchModels
+﻿namespace Resistance.Web.Dispatchers.DispatchModels
 {
-    public class ShowLeaderScriptNotification : IRequest
+    public class ShowLeaderScriptNotification
     {
         public bool ShowScript { get; set; }
     }

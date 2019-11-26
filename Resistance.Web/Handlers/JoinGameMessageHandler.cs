@@ -16,18 +16,15 @@ namespace Resistance.Web.Handlers
     {
         private readonly IGameManager _gameManager;
         private readonly IGameConnectionIdStore _gameConnectionIdStore;
-        private readonly IClientMessageDispatcherFactory _clientMessageDispatcherFactory;
         private readonly IClientMessageDispatcher _clientMessageDispatcher;
 
         public JoinGameMessageHandler(
             IGameManager gameManager,
             IGameConnectionIdStore gameConnectionIdStore,
-            IClientMessageDispatcherFactory clientMessageDispatcherFactory,
             IClientMessageDispatcher clientMessageDispatcher)
         {
             _gameManager = gameManager;
             _gameConnectionIdStore = gameConnectionIdStore;
-            _clientMessageDispatcherFactory = clientMessageDispatcherFactory;
             _clientMessageDispatcher = clientMessageDispatcher;
         }
 

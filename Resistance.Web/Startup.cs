@@ -1,5 +1,4 @@
 using AutoMapper;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MQTTnet.AspNetCore;
 using MQTTnet.Server;
-using Resistance.Web.Hubs;
 using Resistance.Web.Services;
 using Resistance.Web.Services.Mqtt;
 using SimpleMediator.Extensions.Microsoft.DependencyInjection;
@@ -45,15 +43,6 @@ namespace Resistance.Web
             services
                 .AddSimpleMediator()
                 .AddSimpleMediatorMiddleware();
-
-            services.AddSignalR(options =>
-            {
-                if (Environment.IsDevelopment())
-                {
-                    options.EnableDetailedErrors = true;
-                }
-
-            });
 
             services
                 .AddTransient<ICodeGenerator, CodeGenerator>()
@@ -104,8 +93,6 @@ namespace Resistance.Web
                 {
                     options.WebSockets.SubProtocolSelector = MQTTnet.AspNetCore.ApplicationBuilderExtensions.SelectSubProtocol;
                 });
-                endpoints.MapHub<LobbyHub>("/lobby");
-                endpoints.MapHub<GameHub>("/game");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");

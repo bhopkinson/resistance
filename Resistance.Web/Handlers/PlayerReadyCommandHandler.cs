@@ -13,12 +13,8 @@ namespace Resistance.Web.Handlers
 {
     public class PlayerReadyCommandHandler : CommandHandler<PlayerReadyCommand>
     {
-        private readonly IClientMessageDispatcherFactory _clientMessageDispatcherFactory;
-
-        public PlayerReadyCommandHandler(
-            IClientMessageDispatcherFactory clientMessageDispatcherFactory)
+        public PlayerReadyCommandHandler()
         {
-            _clientMessageDispatcherFactory = clientMessageDispatcherFactory;
         }
 
         protected override async Task HandleCommandAsync(PlayerReadyCommand command, IMediationContext mediationContext, CancellationToken cancellationToken)
