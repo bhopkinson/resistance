@@ -31,14 +31,13 @@ namespace Resistance.Web.Handlers
 
             var player = new GameModels.Player()
             {
+                Id = Guid.NewGuid(),
                 Name = message.PlayerName
             };
 
-            var playerId = Guid.NewGuid();
-
             game.PlayersLobby.AddOrUpdate(player);
 
-            return await Task.FromResult(playerId);
+            return await Task.FromResult(player.Id);
 
             //_gameConnectionIdStore.StorePlayerConnectionIdForGame(command.GameCode, command.PlayerName, gameContext.ConnectionId);
 

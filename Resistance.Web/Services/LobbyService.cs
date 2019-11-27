@@ -32,13 +32,18 @@ namespace Resistance.Web.Services
         {
             var code = _gameManager.CreateGame();
 
+            void publishLobbyGamePlayers(Player player) =>
+                _clientMessageDispatcher.PublishLobbyGamePlayers(
+                        code,
+                        _mapper.Map<Dispatchers.DispatchModels.Player[]>(
+                            _gameManager.GetGame(code).PlayersLobby.Items));
+
             var playersUpdatedSubsription = _gameManager.GetGame(code).PlayersLobby
                 .Connect()
+                .OnItemAdded(publishLobbyGamePlayers)
+                .OnItemRemoved(publishLobbyGamePlayers)
                 .WhenAnyPropertyChanged(nameof(Player.IsReady))
-                .Subscribe(p =>
-                    _clientMessageDispatcher.PublishLobbyGamePlayers(
-                        code,
-                        _mapper.Map<Dispatchers.DispatchModels.Player[]>(_gameManager.GetGame(code).PlayersLobby.Items)));
+                .Subscribe(publishLobbyGamePlayers);
 
             _playersUpdatedSubscriptions.Add(code, playersUpdatedSubsription);
 
