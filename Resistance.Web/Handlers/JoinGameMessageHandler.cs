@@ -5,10 +5,11 @@ using SimpleMediator.Core;
 using Resistance.Web.Commands;
 using System;
 using DynamicData;
+using SimpleMediator.Queries;
 
 namespace Resistance.Web.Handlers
 {
-    public class JoinGameMessageHandler : IMessageHandler<JoinGameMessage, Guid>
+    public class JoinGameMessageHandler : QueryHandler<JoinGameMessage, Guid>
     {
         private readonly IGameManager _gameManager;
         private readonly IGameConnectionIdStore _gameConnectionIdStore;
@@ -24,7 +25,7 @@ namespace Resistance.Web.Handlers
             _clientMessageDispatcher = clientMessageDispatcher;
         }
 
-        public async Task<Guid> HandleAsync(JoinGameMessage message, IMediationContext mediationContext, CancellationToken cancellationToken)
+        protected override async Task<Guid> HandleQueryAsync(JoinGameMessage message, IMediationContext mediationContext, CancellationToken cancellationToken)
         {
             var game = _gameManager.GetGame(message.GameCode);
 

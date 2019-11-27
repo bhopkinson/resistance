@@ -28,7 +28,7 @@ namespace Resistance.Web.Controllers
 
         [HttpPost]
         [Route("{code}/join")]
-        public async Task<Guid> Join(string gameCode, [FromBody]string playerName) =>
+        public async Task<Guid> Join(string gameCode, [FromBody] string playerName) =>
             await _mediator.HandleAsync(new JoinGameMessage
             {
                 GameCode = gameCode,
