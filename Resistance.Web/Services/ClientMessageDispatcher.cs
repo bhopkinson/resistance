@@ -23,6 +23,9 @@ namespace Resistance.Web.Services
         public async Task PublishLobbyGameCodes(string[] gameCodes) =>
             await Publish(Topics.LOBBY_GAMES, gameCodes);
 
+        public async Task PublishLobbyGamePlayers(string gameCode, Player[] players) =>
+            await Publish($"{Topics.LOBBY_GAMES}/{gameCode}", players);
+
         private async Task Publish(string topic, dynamic @object)
         {
             var bytes = GetBytes(@object);

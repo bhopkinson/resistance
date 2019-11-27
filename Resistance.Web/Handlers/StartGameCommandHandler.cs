@@ -30,38 +30,38 @@ namespace Resistance.Web.Handlers
         protected override async Task HandleCommandAsync(StartGameCommand command, IMediationContext mediationContext, CancellationToken cancellationToken)
         {
             var gameContext = mediationContext as GameContext;
-            var gameReady = gameContext.Game.Players.All(o => o.Value.IsReady);
+            //var gameReady = gameContext.Game.PlayersLobby.All(o => o.Value.IsReady);
 
             // TODO: Add validation
 
-            gameContext.Game.CurrentState = GameState.Started;
-            foreach (var playerReset in gameContext.Game.Players)
-            {
-                playerReset.Value.IsReady = false;
-            }
+            //gameContext.Game.CurrentState = GameState.Started;
+            //foreach (var playerReset in gameContext.Game.PlayersLobby)
+            //{
+            //    playerReset.Value.IsReady = false;
+            //}
 
-            var players = gameContext.Game.Players.Values.ToList();
+            //var players = gameContext.Game.PlayersLobby.Values.ToList();
 
-            _characterAssignment.AssignRoles(players);
+            //_characterAssignment.AssignRoles(players);
 
-            foreach (var player in players)
-            {
-                var playerCharacterNotification = new ShowCharacterNotification()
-                {
-                    Role = player.Character.Role,
-                    Team = player.Character.Team
-                };
+            //foreach (var player in players)
+            //{
+            //    var playerCharacterNotification = new ShowCharacterNotification()
+            //    {
+            //        Role = player.Character.Role,
+            //        Team = player.Character.Team
+            //    };
 
-                //await _clientMessageDispatcherFactory
-                //    .CreateClientMessageDispatcher(x => x.ShowCharacter(playerCharacterNotification))
-                //    .SendToPlayerInGame(gameContext.GameCode, player.Name);
-            }
+            //    //await _clientMessageDispatcherFactory
+            //    //    .CreateClientMessageDispatcher(x => x.ShowCharacter(playerCharacterNotification))
+            //    //    .SendToPlayerInGame(gameContext.GameCode, player.Name);
+            //}
 
-            gameContext.Game.SortedPlayers = _playerOrderInitialisation.GetSortedPlayers(players);
-            gameContext.Game.Missions = _missionInitialisation.InitiliseMissions(players.Count);
+            //gameContext.Game.SortedPlayers = _playerOrderInitialisation.GetSortedPlayers(players);
+            //gameContext.Game.Missions = _missionInitialisation.InitiliseMissions(players.Count);
 
-            var firstMission = gameContext.Game.Missions.Where(o => o.Number == 1).SingleOrDefault();
-            firstMission.Team.Leader = gameContext.Game.SortedPlayers.First();
+            //var firstMission = gameContext.Game.Missions.Where(o => o.Number == 1).SingleOrDefault();
+            //firstMission.Team.Leader = gameContext.Game.SortedPlayers.First();
 
             //TODO broadcast mission update
         }

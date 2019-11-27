@@ -1,4 +1,5 @@
-﻿using Resistance.Web.Dispatchers.DispatchModels;
+﻿using DynamicData;
+using Resistance.Web.Dispatchers.DispatchModels;
 using Resistance.GameModels.enums;
 using System.Linq;
 using System.Threading;
@@ -20,7 +21,8 @@ namespace Resistance.Web.Handlers
         protected override async Task HandleCommandAsync(PlayerReadyCommand command, IMediationContext mediationContext, CancellationToken cancellationToken)
         {
             var gameContext = mediationContext as GameContext;
-            var player = gameContext.Game.Players
+            var player = gameContext.Game.PlayersLobby
+                .KeyValues
                 .Where(o => o.Key == gameContext.PlayerId)
                 .SingleOrDefault()
                 .Value;

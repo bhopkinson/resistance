@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using DynamicData;
+using Resistance.GameModels;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 
@@ -7,6 +10,8 @@ namespace Resistance.Web.Services
 {
     public class LobbyService : ILobbyService, IDisposable
     {
+        private readonly Dictionary<string, IDisposable> _playersUpdatedSubscriptions = new Dictionary<string, IDisposable>();
+
         private IMapper _mapper;
         private IGameManager _gameManager;
         private IClientMessageDispatcher _clientMessageDispatcher;
@@ -23,11 +28,25 @@ namespace Resistance.Web.Services
             _gameManager.GameCodes.CollectionChanged += GameCodes_CollectionChanged;
         }
 
-        public string CreateGame() =>
-            _gameManager.CreateGame();
+        public string CreateGame()
+        {
+            var code = _gameManager.CreateGame();
 
-        private void GameCodes_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) =>
-            _clientMessageDispatcher.PublishLobbyGameCodes(_gameManager.GameCodes.ToArray());
+            var playersUpdatedSubsription = _gameManager.GetGame(code).PlayersLobby
+                .Connect()
+                .WhenAnyPropertyChanged(nameof(Player.IsReady))
+                .Subscribe(p =>
+                    _clientMessageDispatcher.PublishLobbyGamePlayers(
+                        code,
+                        _mapper.Map<Dispatchers.DispatchModels.Player[]>(_gameManager.GetGame(code).PlayersLobby.Items)));
+
+            _playersUpdatedSubscriptions.Add(code, playersUpdatedSubsription);
+
+            return code;
+        }
+
+        private async void GameCodes_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) =>
+            await _clientMessageDispatcher.PublishLobbyGameCodes(_gameManager.GameCodes.ToArray());
 
         #region IDisposable Support
         private bool disposedValue = false;
@@ -39,6 +58,7 @@ namespace Resistance.Web.Services
                 if (disposing)
                 {
                     _gameManager.GameCodes.CollectionChanged -= GameCodes_CollectionChanged;
+                    _playersUpdatedSubscriptions.Values.ToList().ForEach(v => v.Dispose());
                 }
 
                 disposedValue = true;

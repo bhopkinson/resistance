@@ -1,14 +1,10 @@
-﻿using Resistance.Web.Dispatchers.DispatchModels;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Resistance.Web.Services;
-using SimpleMediator.Commands;
 using SimpleMediator.Core;
 using Resistance.Web.Commands;
-using Resistance.Web.MediationModels;
-using Resistance.Web.Dispatchers;
 using System;
+using DynamicData;
 
 namespace Resistance.Web.Handlers
 {
@@ -39,9 +35,9 @@ namespace Resistance.Web.Handlers
 
             var playerId = Guid.NewGuid();
 
-            game.Players.TryAdd(playerId, player);
+            game.PlayersLobby.AddOrUpdate(player);
 
-            return playerId;
+            return await Task.FromResult(playerId);
 
             //_gameConnectionIdStore.StorePlayerConnectionIdForGame(command.GameCode, command.PlayerName, gameContext.ConnectionId);
 

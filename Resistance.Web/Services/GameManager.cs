@@ -9,7 +9,7 @@ namespace Resistance.Web.Services
 {
     public class GameManager : IGameManager, IDisposable
     {
-        private readonly SourceCache<Game, string> _games;
+        private readonly SourceCache<Game, string> _games = new SourceCache<Game, string>(g => g.Code);
         private readonly ICodeGenerator _gameCodeGenerator;
 
         private readonly IDisposable _gameCodeSubscription;
@@ -18,7 +18,6 @@ namespace Resistance.Web.Services
 
         public GameManager(ICodeGenerator gameCodeGenerator)
         {
-            _games = new SourceCache<Game, string>(g => g.Code);
             _gameCodeSubscription = _games
                 .Connect()
                 .RemoveKey()
