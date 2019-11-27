@@ -20,7 +20,7 @@ export class LobbyService {
     private _lobbySubsciption: Subscription;
     private _lobbyGamesSubscription: Subscription;
 
-    public games = new Observable<Observable<Game>[]>();
+    public games = new Subject<Subject<Game>[]>();
 
     private _games = new BehaviorSubject<Map<string, Subject<Game>>>(new Map<string, Subject<Game>>());
 
@@ -44,7 +44,7 @@ export class LobbyService {
 
     private registerSubscriptions(): void {
         
-        this._gamesSubscription = this._games.subscribe(map => this.games.next());
+        this._gamesSubscription = this._games.subscribe(games => this.games.next([...games.values()]));
 
         this._lobbySubsciption = this.mqtt.observe("lobby").subscribe((message: IMqttMessage) => {
             // Fresh list of game codes from server
