@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Joining game {{data.gameCode}}</h1>
+<div mat-dialog-content>
+  <p>Please enter your initials:</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="name">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]>Cancel</button>
+  <!-- <mat-spinner-button (btnClick)="onJoinClick()" [options]="joinBtnOptions"></mat-spinner-button> -->
+  <button mat-button (click)="onJoinClick()" cdkFocusInitial [appShowSpinner]="this.isSaving">Join</button>
+</div>

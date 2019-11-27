@@ -8,22 +8,31 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MqttService } from 'ngx-mqtt';
 import { AppRoutingModule } from '../../app-routing.module';
 import { NewGameComponent } from './new-game/new-game.component';
+import { JoinGameDialogComponent } from '../../components/join-game-dialog/join-game-dialog.component';
+import { FormsModule } from '@angular/forms';
+import { AppDirectivesModule } from '../../directives/app-directives.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    AppDirectivesModule,
     AppMaterialModule,
     AppRoutingModule,
     FlexLayoutModule,
+    FormsModule,
   ],
   declarations: [
     LobbyPageComponent,
     NewGameComponent,
     GameCardComponent,
+    JoinGameDialogComponent,
     PlayerChipComponent
   ],
   providers: [
     MqttService
+  ],
+  entryComponents: [
+    JoinGameDialogComponent
   ]
 })
 export class LobbyModule { }

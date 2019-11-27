@@ -9,6 +9,8 @@ import { LobbyModule } from './pages/lobby';
 import { MqttModule, IMqttServiceOptions } from 'ngx-mqtt';
 import { HttpClientModule } from '@angular/common/http';
 import { GameModule } from './pages/game';
+import { JoinGameDialogComponent } from './components/join-game-dialog/join-game-dialog.component';
+import { FormsModule } from '@angular/forms';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: 'localhost',
@@ -32,6 +34,6 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

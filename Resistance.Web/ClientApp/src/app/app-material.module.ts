@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCardModule, MatIconModule, MatChipsModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatIconModule, MatChipsModule, MatDialogModule, MatInputModule, MatFormFieldModule } from '@angular/material';
+import { MatProgressButtonsModule } from 'mat-progress-buttons';
 
 @NgModule({
   declarations: [],
@@ -9,13 +10,21 @@ import { MatButtonModule, MatCardModule, MatIconModule, MatChipsModule } from '@
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
-    MatIconModule
+    MatDialogModule,
+    MatIconModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatProgressButtonsModule
   ],
   exports: [
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
-    MatIconModule
+    MatDialogModule,
+    MatIconModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatProgressButtonsModule
   ]
 })
 export class AppMaterialModule { }

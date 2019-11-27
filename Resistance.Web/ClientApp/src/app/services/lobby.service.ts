@@ -16,7 +16,6 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 @Injectable()
 export class LobbyService {
 
-    private _gamesSubscription: Subscription;
     private _lobbyGamesSubscription: Subscription;
 
     public gameCodes: Observable<string[]>;
@@ -33,12 +32,16 @@ export class LobbyService {
     }
     
     public ngOnDestroy(): void {
-        this._gamesSubscription.unsubscribe();
         this._lobbyGamesSubscription.unsubscribe();
     }
 
     public createGame(): Observable<string> {
         return this.http.post<string>("api/game/create", null);
+    }
+
+    public joinGame(gameCode: string, name: string): Observable<string> {
+        console.log("Joining game");
+        return this.http.post<string>(`api/game/${gameCode}/join`, name);
     }
 
     private registerSubscriptions(): void {

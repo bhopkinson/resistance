@@ -4,8 +4,8 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$resistance-primary: mat-palette($mat-blue-grey, 800, 700, 900);
-$resistance-accent: mat-palette($mat-blue, 700);
+$resistance-primary: mat-palette($mat-blue, 700);
+$resistance-accent: mat-palette($mat-red, 500);
 
 // The warn palette is optional (defaults to red).
 $resistance-warn: mat-palette($mat-red);
