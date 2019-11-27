@@ -5,7 +5,7 @@ namespace Resistance.Web.Services
 {
     public interface IClientMessageDispatcher
     {
-        Task Publish(Lobby lobby);
+        Task PublishLobbyGameCodes(string[] gameCodes);
         //Task Send();
         //Task SendToConnectionId(string connectionId);
     }

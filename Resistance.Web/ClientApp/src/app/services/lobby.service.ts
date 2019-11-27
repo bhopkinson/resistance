@@ -46,7 +46,7 @@ export class LobbyService {
         
         this._gamesSubscription = this._games.subscribe(games => this.games.next([...games.values()]));
 
-        this._lobbySubsciption = this.mqtt.observe("lobby").subscribe((message: IMqttMessage) => {
+        this._lobbySubsciption = this.mqtt.observe("lobby/games").subscribe((message: IMqttMessage) => {
             // Fresh list of game codes from server
             const freshGameCodes = decode(message.payload) as string[];
 
@@ -70,7 +70,7 @@ export class LobbyService {
             this._games.next(newGameMap);
         });
 
-        this._lobbyGamesSubscription = this.mqtt.observe("lobby/+").subscribe((message: IMqttMessage) => {
+        this._lobbyGamesSubscription = this.mqtt.observe("lobby/games/+").subscribe((message: IMqttMessage) => {
             const gameCode = message.topic.split('/')[1];
             const game = this._games.getValue().get(gameCode);
             game.next(decode(message.payload) as Game);

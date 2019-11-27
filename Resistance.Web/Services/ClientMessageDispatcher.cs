@@ -20,8 +20,8 @@ namespace Resistance.Web.Services
             _mqttServer = mqttServer;
         }
 
-        public async Task Publish(Lobby lobby) =>
-            await Publish(Topics.LOBBY, lobby);
+        public async Task PublishLobbyGameCodes(string[] gameCodes) =>
+            await Publish(Topics.LOBBY_GAMES, gameCodes);
 
         private async Task Publish(string topic, dynamic @object)
         {

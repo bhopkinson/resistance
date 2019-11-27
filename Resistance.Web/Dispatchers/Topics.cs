@@ -2,6 +2,6 @@
 {
     internal static class Topics
     {
-        internal const string LOBBY = "lobby";
+        internal const string LOBBY_GAMES = "lobby/games";
     }
 }

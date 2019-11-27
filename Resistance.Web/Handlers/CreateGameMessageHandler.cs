@@ -25,7 +25,7 @@ namespace Resistance.Web.Handlers
         {
             var code = _lobbyService.CreateGame();
             
-            await _lobbyService.Publish();
+            //await _lobbyService.Publish();
 
             return code;
         }

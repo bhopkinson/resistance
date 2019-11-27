@@ -48,12 +48,12 @@ namespace Resistance.Web
                 .AddTransient<ICodeGenerator, CodeGenerator>()
                 .AddTransient<ICharacterAssignment, CharacterAssignment>()
                 .AddTransient<IClientMessageDispatcher, ClientMessageDispatcher>()
-                .AddTransient<ILobbyService, LobbyService>()
                 .AddTransient<IMissionInitialisation, MissionInitialisation>()
                 .AddTransient<IPlayerOrderInitialisation, PlayerOrderInitialisation>();
 
             services
                 .AddSingleton<IGameManager, GameManager>()
+                .AddSingleton<ILobbyService, LobbyService>()
                 .AddSingleton<IGameConnectionIdStore, GameConnectionIdStore>();
 
             services.AddControllersWithViews();

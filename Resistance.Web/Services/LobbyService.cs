@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Resistance.Web.Dispatchers;
-using Resistance.Web.Dispatchers.DispatchModels;
-using System.Collections.Generic;
+using System;
+using System.Collections.Specialized;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Resistance.Web.Services
 {
-    public class LobbyService : ILobbyService
+    public class LobbyService : ILobbyService, IDisposable
     {
         private IMapper _mapper;
         private IGameManager _gameManager;
@@ -22,22 +19,36 @@ namespace Resistance.Web.Services
             _mapper = mapper;
             _gameManager = gameManager;
             _clientMessageDispatcher = clientMessageDispatcher;
+
+            _gameManager.GameCodes.CollectionChanged += GameCodes_CollectionChanged;
         }
 
         public string CreateGame() =>
             _gameManager.CreateGame();
 
-        public async Task Publish() =>
-            await _clientMessageDispatcher.Publish(new Lobby
-            {
-                Games = GetGames()
-            });
+        private void GameCodes_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) =>
+            _clientMessageDispatcher.PublishLobbyGameCodes(_gameManager.GameCodes.ToArray());
 
-        private ICollection<Game> GetGames() =>
-            _mapper.ProjectTo<Game>(
-                _gameManager.GetAllGames()
-                .AsQueryable()
-                .OrderBy(g => g.Created))
-            .ToList();
+        #region IDisposable Support
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _gameManager.GameCodes.CollectionChanged -= GameCodes_CollectionChanged;
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        #endregion
     }
 }
