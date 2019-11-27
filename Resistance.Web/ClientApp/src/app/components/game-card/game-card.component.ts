@@ -1,5 +1,10 @@
 import { Component, OnInit, Input, HostBinding } from '@angular/core';
+import { IMqttServiceOptions, MqttService, IMqttMessage } from 'ngx-mqtt';
 import { Game } from '../../models/Game';
+import { Player } from '../../models/Player';
+import { Subject, Subscription, Observable, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { decode } from '@msgpack/msgpack';
 
 @Component({
   selector: 'app-game-card',
@@ -8,30 +13,33 @@ import { Game } from '../../models/Game';
 })
 export class GameCardComponent implements OnInit {
 
-  @Input() game: Game;
+  @Input() gameCode: string;
 
-  // players: Player[] = [
-  //   {Id: '1', Initials: 'BH', IsReady: false, ImageUrl: 'BH.jpg'},
-  //   {Id: '2', Initials: 'AD', IsReady: true, ImageUrl: 'AD.jpg'},
-  //   {Id: '3', Initials: 'JT', IsReady: true, ImageUrl: 'JT.jpg'},
-  //   {Id: '4', Initials: 'CO', IsReady: false, ImageUrl: 'CO.jpg'},
-  //   {Id: '5', Initials: 'JP', IsReady: false, ImageUrl: 'JP.jpg'},
-  //   {Id: '6', Initials: 'TH', IsReady: false, ImageUrl: 'TH.jpg'},
-  //   // {Id: '7', Initials: 'PH', IsReady: true, ImageUrl: 'PH.jpg'},
-  //   // {Id: '8', Initials: 'NJ', IsReady: true, ImageUrl: 'NJ.jpg'},
-  //   // {Id: '9', Initials: 'DH', IsReady: true, ImageUrl: 'DH.jpg'},
-  //   // {Id: '10', Initials: 'MW', IsReady: false, ImageUrl: 'MW.jpg'},
-  //   // {Id: '11', Initials: 'BD', IsReady: true, ImageUrl: 'BD.jpg'},
-  //];
+  private _playersSubscription: Subscription;
+  private _players = new BehaviorSubject<Player[]>([]);
 
-  public getPlayerCountText()
-  {
-    return `${this.game.Players.length} player${this.game.Players.length === 1 ? '' : 's'}`;
+  public players: Observable<Player[]>;
+
+  constructor(
+    private mqtt: MqttService) {
+      this.players = this._players;
   }
 
-  constructor() { }
-
   ngOnInit() {
+    this._playersSubscription = this.mqtt.observe(`lobby/games/${this.gameCode}`).subscribe((message: IMqttMessage) => {
+      this._players.next(decode(message.payload) as Player[]);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this._playersSubscription.unsubscribe();
+  }
+ 
+  public getPlayerCountText(): Observable<string>
+  {
+    return this.players.pipe(
+      map(players => `${players.length} player${players.length === 1 ? '' : 's'}`)
+    );
   }
 
 }

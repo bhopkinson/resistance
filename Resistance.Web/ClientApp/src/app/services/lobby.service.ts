@@ -17,12 +17,11 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 export class LobbyService {
 
     private _gamesSubscription: Subscription;
-    private _lobbySubsciption: Subscription;
     private _lobbyGamesSubscription: Subscription;
 
-    public games = new Subject<Subject<Game>[]>();
+    public gameCodes: Observable<string[]>;
 
-    private _games = new BehaviorSubject<Map<string, Subject<Game>>>(new Map<string, Subject<Game>>());
+    private _gameCodes = new BehaviorSubject<string[]>([]);
 
     constructor(
         private http: HttpClient,
@@ -30,11 +29,11 @@ export class LobbyService {
         
         this.mqtt.connect(MQTT_SERVICE_OPTIONS);
         this.registerSubscriptions();
+        this.gameCodes = this._gameCodes;
     }
     
     public ngOnDestroy(): void {
         this._gamesSubscription.unsubscribe();
-        this._lobbySubsciption.unsubscribe();
         this._lobbyGamesSubscription.unsubscribe();
     }
 
@@ -44,37 +43,41 @@ export class LobbyService {
 
     private registerSubscriptions(): void {
         
-        this._gamesSubscription = this._games.subscribe(games => this.games.next([...games.values()]));
+        //this._gamesSubscription = this._gameCodes.subscribe(gameCodes => this.gameCodes.next([...gameCodes.values()]));
 
-        this._lobbySubsciption = this.mqtt.observe("lobby/games").subscribe((message: IMqttMessage) => {
-            // Fresh list of game codes from server
-            const freshGameCodes = decode(message.payload) as string[];
-
-            // New map of games
-            const newGameMap = new Map<string, Subject<Game>>();
-
-            // Add all existing games into the new map
-            this._games.getValue().forEach((game, code) => {
-                if (freshGameCodes.includes(code)) {
-                    newGameMap.set(code, game);
-                }
-            });
-
-            // Get new game codes and add them to the map
-            const newGameCodes = freshGameCodes.filter(code => !newGameMap.has(code));
-            newGameCodes.forEach(code => {
-                newGameMap.set(code, new Subject<Game>())
-            });
-
-            // Push updated map
-            this._games.next(newGameMap);
+        this._lobbyGamesSubscription = this.mqtt.observe("lobby/games").subscribe((message: IMqttMessage) => {
+            this._gameCodes.next(decode(message.payload) as string[]);
         });
 
-        this._lobbyGamesSubscription = this.mqtt.observe("lobby/games/+").subscribe((message: IMqttMessage) => {
-            const gameCode = message.topic.split('/')[1];
-            const game = this._games.getValue().get(gameCode);
-            game.next(decode(message.payload) as Game);
-        });
+        // this._lobbySubsciption = this.mqtt.observe("lobby/games").subscribe((message: IMqttMessage) => {
+        //     // Fresh list of game codes from server
+        //     const freshGameCodes = decode(message.payload) as string[];
+
+        //     // New map of games
+        //     const newGameMap = new Map<string, Subject<Game>>();
+
+        //     // Add all existing games into the new map
+        //     this._gameCodes.getValue().forEach((game, code) => {
+        //         if (freshGameCodes.includes(code)) {
+        //             newGameMap.set(code, game);
+        //         }
+        //     });
+
+        //     // Get new game codes and add them to the map
+        //     const newGameCodes = freshGameCodes.filter(code => !newGameMap.has(code));
+        //     newGameCodes.forEach(code => {
+        //         newGameMap.set(code, new Subject<Game>())
+        //     });
+
+        //     // Push updated map
+        //     this._games.next(newGameMap);
+        // });
+
+        // this._lobbyGamesSubscription = this.mqtt.observe("lobby/games/+").subscribe((message: IMqttMessage) => {
+        //     const gameCode = message.topic.split('/')[1];
+        //     const game = this._games.getValue().get(gameCode);
+        //     game.next(decode(message.payload) as Game);
+        // });
     }
 
     // public CreateGame() {

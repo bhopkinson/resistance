@@ -2,9 +2,9 @@
     ngClass.lt-md="lt-md">
     <mat-card-header>
       <mat-card-title>
-        {{game.Code}}
+        {{gameCode}}
         <span class="app-game-card-player-count">
-          ({{getPlayerCountText()}})
+          ({{getPlayerCountText() | async}})
         </span>
       </mat-card-title>
     </mat-card-header>
@@ -16,7 +16,7 @@
         gdRows="repeat(6, auto)"
         gdColumns="repeat(auto-fit, minmax(250px, .75fr))">
         <app-player-chip
-          *ngFor="let player of game.Players"
+          *ngFor="let player of (players | async)"
           [player]="player">
         </app-player-chip>
       </div>

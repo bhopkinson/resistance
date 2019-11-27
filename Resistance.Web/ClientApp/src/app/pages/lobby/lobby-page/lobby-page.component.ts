@@ -12,19 +12,19 @@ import { Game } from 'src/app/models/Game';
 })
 export class LobbyPageComponent implements OnInit {
 
-  public games = new Subject<Observable<Game>[]>();
-  private gamesSubscription: Subscription;
+  public gameCodes = new Subject<string[]>();
+  private gameCodesSubscription: Subscription;
 
   constructor(private lobbyService: LobbyService) { }
 
   ngOnInit() {
-    this.gamesSubscription = this.lobbyService.games.subscribe(games => {
-      this.games.next(games);
+    this.gameCodesSubscription = this.lobbyService.gameCodes.subscribe(gameCodes => {
+      this.gameCodes.next(gameCodes);
     })
   }
 
   ngOnDestroy(): void {
-    this.gamesSubscription.unsubscribe();
+    this.gameCodesSubscription.unsubscribe();
   }
 
 }

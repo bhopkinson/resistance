@@ -4,8 +4,8 @@
     fxLayout.lt-md="column"
     fxLayoutAlign.lt-md="center">
     <app-game-card
-        *ngFor="let game of (games | async)"
-        [game]="game">
+        *ngFor="let gameCode of (gameCodes | async)"
+        [gameCode]="gameCode">
     </app-game-card>
 </div>
 <div
