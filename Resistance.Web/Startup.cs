@@ -52,6 +52,7 @@ namespace Resistance.Web
                 .AddTransient<IPlayerOrderInitialisation, PlayerOrderInitialisation>();
 
             services
+                .AddSingleton<IPlayerTokenService, PlayerTokenService>()
                 .AddSingleton<IGameManager, GameManager>()
                 .AddSingleton<ILobbyService, LobbyService>()
                 .AddSingleton<IGameConnectionIdStore, GameConnectionIdStore>();

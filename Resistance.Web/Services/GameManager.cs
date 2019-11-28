@@ -4,6 +4,7 @@ using Resistance.GameModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace Resistance.Web.Services
 {
@@ -42,6 +43,10 @@ namespace Resistance.Web.Services
 
                 var game = new Game(code);
                 _games.AddOrUpdate(game);
+
+                var rnd = new RNGCryptoServiceProvider();
+                var b = game.Key = new byte[16];
+                rnd.GetNonZeroBytes(b);
 
                 return code;
             }

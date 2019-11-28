@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Subject, ReplaySubject, BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { PlayerDetails } from '../models/PlayerDetails';
@@ -8,6 +8,8 @@ import { Character } from '../models/Character';
 import { Team } from '../models/Team';
 import { Role } from '../models/Role';
 import { StorageMap } from '@ngx-pwa/local-storage';
+import * as jwt_decode from 'jwt-decode';
+import { map } from 'rxjs/internal/operators/map';
 
 @Injectable({
   providedIn: 'root'
@@ -32,26 +34,32 @@ export class GameService {
     public initials: string;
     public showLeaderScript = this._showLeaderScript.asObservable();
 
-    private _playerId = new BehaviorSubject<string>(null);
-
-    public playerId: Observable<string>;
+    private _token = new BehaviorSubject<string>(null);
 
     constructor(
       private storage: StorageMap) {
 
-      this.playerId = this._playerId;
-
-      this.storage.get("playerId", { type: 'string' }).subscribe({
-        next: (playerId) => {
-          this._playerId.next(playerId as string);
+      this.storage.get("token", { type: 'string' }).subscribe({
+        next: (token) => {
+          this._token.next(token as string);
         }
       });
 
     }
 
-    public setPlayerId(id: string): void {
-      this._playerId.next(id);
-      this.storage.set("playerId", id).subscribe({next: () => { }});
+    public storeToken(token: string): void {
+      this._token.next(token);
+      this.storage.set("token", token).subscribe({next: () => { }});
+    }
+
+    public getGameCode(): Observable<string> {
+      return this._token
+        .pipe(map(token => jwt_decode(token)['game_code']));
+    }
+
+    public getPlayerId(): Observable<string> {
+      return this._token
+        .pipe(map(token => jwt_decode(token)['player_id']));
     }
 
     // public JoinGame(initials: string) {

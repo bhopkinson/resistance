@@ -32,7 +32,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     GameModule,
     HttpClientModule,
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
-    StorageModule.forRoot({ IDBNoWrap: true })
+    StorageModule.forRoot({ IDBNoWrap: true }),
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -9,23 +9,26 @@ using SimpleMediator.Queries;
 
 namespace Resistance.Web.Handlers
 {
-    public class JoinGameMessageHandler : QueryHandler<JoinGameMessage, Guid>
+    public class JoinGameMessageHandler : QueryHandler<JoinGameMessage, string>
     {
         private readonly IGameManager _gameManager;
         private readonly IGameConnectionIdStore _gameConnectionIdStore;
         private readonly IClientMessageDispatcher _clientMessageDispatcher;
+        private readonly IPlayerTokenService _playerTokenService;
 
         public JoinGameMessageHandler(
             IGameManager gameManager,
             IGameConnectionIdStore gameConnectionIdStore,
-            IClientMessageDispatcher clientMessageDispatcher)
+            IClientMessageDispatcher clientMessageDispatcher,
+            IPlayerTokenService playerTokenService)
         {
             _gameManager = gameManager;
             _gameConnectionIdStore = gameConnectionIdStore;
             _clientMessageDispatcher = clientMessageDispatcher;
+            _playerTokenService = playerTokenService;
         }
 
-        protected override async Task<Guid> HandleQueryAsync(JoinGameMessage message, IMediationContext mediationContext, CancellationToken cancellationToken)
+        protected override async Task<string> HandleQueryAsync(JoinGameMessage message, IMediationContext mediationContext, CancellationToken cancellationToken)
         {
             var game = _gameManager.GetGame(message.GameCode);
 
@@ -37,7 +40,9 @@ namespace Resistance.Web.Handlers
 
             game.PlayersLobby.AddOrUpdate(player);
 
-            return await Task.FromResult(player.Id);
+            var token = _playerTokenService.GenerateToken(game.Code, player.Id);
+
+            return await Task.FromResult(token);
 
             //_gameConnectionIdStore.StorePlayerConnectionIdForGame(command.GameCode, command.PlayerName, gameContext.ConnectionId);
 

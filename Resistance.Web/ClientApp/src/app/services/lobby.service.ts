@@ -31,7 +31,7 @@ export class LobbyService {
         };
         return this.http.post<string>(`api/game/${gameCode}/join`, JSON.stringify(name), httpOptions)
             .pipe(
-                tap(playerId => this.gameService.setPlayerId(playerId))
+                tap(token => this.gameService.storeToken(token))
             );
     }
 
@@ -46,7 +46,7 @@ export class LobbyService {
     public getCurrentPlayer(gameCode: string): Observable<Player> {
         return combineLatest(
             this.getGamePlayers(gameCode),
-            this.gameService.playerId
+            this.gameService.getPlayerId()
         ).pipe(
             map(([players, id]) => players.find(player => player.Id === id))
         );

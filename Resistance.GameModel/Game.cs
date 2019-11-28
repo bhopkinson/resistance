@@ -18,6 +18,7 @@ namespace Resistance.GameModels
         }
 
         public string Code { get; set; }
+        public byte[] Key { get; set; }
         public DateTimeOffset Created { get; set; }
 
         public SourceCache<Player, Guid> PlayersLobby { get; } = new SourceCache<Player, Guid>(p => p.Id);
