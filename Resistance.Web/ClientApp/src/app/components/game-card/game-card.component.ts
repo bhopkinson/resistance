@@ -17,6 +17,7 @@ export class GameCardComponent implements OnInit {
   @Input() gameCode: string;
 
   public players: Observable<Player[]>;
+  public player: Observable<Player>;
 
   constructor(
     public dialog: MatDialog,
@@ -24,6 +25,7 @@ export class GameCardComponent implements OnInit {
 
   ngOnInit() {
     this.players = this.lobbyService.getGamePlayers(this.gameCode);
+    this.player = this.lobbyService.getCurrentPlayer(this.gameCode);
   }
 
   openJoinGameDialog(): void {

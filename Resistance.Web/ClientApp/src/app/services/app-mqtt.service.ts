@@ -17,9 +17,9 @@ export class AppMqttService {
   public observe(topic: string): Observable<unknown> {
     return this.mqtt.observe(topic)
       .pipe(
-        tap((message: IMqttMessage) => console.log(`MQTT message received on topic ${message.topic}`)),
+        //tap((message: IMqttMessage) => console.log(`MQTT message received on topic '${message.topic}'`)),
         map((message: IMqttMessage) => decode(message.payload)),
-        tap((object: unknown) => console.log(object))
+        //tap((object: unknown) => console.log(object))
       );
   }
 

@@ -14,8 +14,6 @@ export class GameLobbyPageComponent implements OnInit {
 
   private gameCode: string;
 
-  public players: Observable<Player[]>;
-
   constructor(
     private route: ActivatedRoute,
     private lobbyService: LobbyService) { }
@@ -26,10 +24,6 @@ export class GameLobbyPageComponent implements OnInit {
         next: params => {
         this.gameCode = params.code;
       }});
-
-      console.log("gamecode: "+ this.gameCode);
-
-    this.players = this.lobbyService.getGamePlayers(this.gameCode);
   }
 
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, ReplaySubject } from 'rxjs';
+import { Subject, ReplaySubject, BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { PlayerDetails } from '../models/PlayerDetails';
 import { GamePlayer } from '../models/GamePlayer';
@@ -31,13 +31,17 @@ export class GameService {
     public initials: string;
     public showLeaderScript = this._showLeaderScript.asObservable();
 
-    public playerId: string;
+    private _playerId = new BehaviorSubject<string>(null);
+
+    public playerId: Observable<string>;
 
     constructor() {
-        // this.createConnection();
-        // this.registerOnClientEvents();
-        // this.registerOnServerEvents();
-        // this.startConnection();
+      this.playerId = this._playerId;
+    }
+
+    public setPlayerId(id: string): void {
+      this._playerId.next(id);
+      this._playerId.complete();
     }
 
     // public JoinGame(initials: string) {
