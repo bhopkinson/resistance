@@ -7,6 +7,5 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button [mat-dialog-close]>Cancel</button>
-  <!-- <mat-spinner-button (btnClick)="onJoinClick()" [options]="joinBtnOptions"></mat-spinner-button> -->
-  <button mat-button (click)="onJoinClick()" cdkFocusInitial [appShowSpinner]="this.isSaving">Join</button>
+  <button mat-button (click)="onJoinClick()" cdkFocusInitial [appShowSpinner]="this.isJoining">Join</button>
 </div>

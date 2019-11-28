@@ -1,47 +1,29 @@
-import { Component, OnInit, Input, HostBinding } from '@angular/core';
-import { IMqttServiceOptions, MqttService, IMqttMessage } from 'ngx-mqtt';
+import { Component, OnInit, Input, HostBinding, OnDestroy } from '@angular/core';
 import { Player } from '../../models/Player';
-import { Subject, Subscription, Observable, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { decode } from '@msgpack/msgpack';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { JoinGameDialogComponent } from '../join-game-dialog/join-game-dialog.component';
+import { LobbyService } from 'src/app/services/lobby.service';
 
 @Component({
   selector: 'app-game-card',
   templateUrl: './game-card.component.html',
   styleUrls: ['./game-card.component.scss'],
+  providers: [LobbyService]
 })
 export class GameCardComponent implements OnInit {
 
   @Input() gameCode: string;
 
-  private _playersSubscription: Subscription;
-  private _players = new BehaviorSubject<Player[]>([]);
-
   public players: Observable<Player[]>;
 
   constructor(
     public dialog: MatDialog,
-    private mqtt: MqttService) {
-      this.players = this._players;
-  }
+    private lobbyService: LobbyService) { }
 
   ngOnInit() {
-    this._playersSubscription = this.mqtt.observe(`lobby/games/${this.gameCode}`).subscribe((message: IMqttMessage) => {
-      this._players.next(decode(message.payload) as Player[]);
-    });
-  }
-
-  ngOnDestroy(): void {
-    this._playersSubscription.unsubscribe();
-  }
- 
-  public getPlayerCountText(): Observable<string>
-  {
-    return this.players.pipe(
-      map(players => `${players.length} player${players.length === 1 ? '' : 's'}`)
-    );
+    this.players = this.lobbyService.getGamePlayers(this.gameCode);
   }
 
   openJoinGameDialog(): void {

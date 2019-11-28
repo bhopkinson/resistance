@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { LobbyService } from '../../../services/lobby.service';
-import { Observable, BehaviorSubject, Subscription, Subject, ReplaySubject } from 'rxjs';
-import { Lobby } from '../../../models/Lobby';
-import { Game } from 'src/app/models/Game';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-lobby-page',
@@ -10,21 +8,12 @@ import { Game } from 'src/app/models/Game';
   styleUrls: ['./lobby-page.component.scss'],
   providers: [LobbyService]
 })
-export class LobbyPageComponent implements OnInit {
+export class LobbyPageComponent {
 
-  public gameCodes = new Subject<string[]>();
-  private gameCodesSubscription: Subscription;
+  public gameCodes: Observable<string[]>;
 
-  constructor(private lobbyService: LobbyService) { }
-
-  ngOnInit() {
-    this.gameCodesSubscription = this.lobbyService.gameCodes.subscribe(gameCodes => {
-      this.gameCodes.next(gameCodes);
-    })
-  }
-
-  ngOnDestroy(): void {
-    this.gameCodesSubscription.unsubscribe();
-  }
-
+  constructor(
+    private lobbyService: LobbyService) {
+      this.gameCodes = this.lobbyService.getGameCodes();
+    }
 }

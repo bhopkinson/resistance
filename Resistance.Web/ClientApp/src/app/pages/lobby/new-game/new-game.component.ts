@@ -17,7 +17,7 @@ export class NewGameComponent implements OnInit {
   ngOnInit() {
     this.lobbyService.createGame()
       .subscribe(code => {
-        this.router.navigate(["/game", code]);
+        this.router.navigate(["/lobby", code]);
       });
   }
 

@@ -31,6 +31,8 @@ export class GameService {
     public initials: string;
     public showLeaderScript = this._showLeaderScript.asObservable();
 
+    public playerId: string;
+
     constructor() {
         // this.createConnection();
         // this.registerOnClientEvents();

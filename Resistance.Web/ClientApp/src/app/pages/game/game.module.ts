@@ -4,7 +4,6 @@ import { MqttService } from 'ngx-mqtt';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppMaterialModule } from 'src/app/app-material.module';
 import { AppRoutingModule } from 'src/app/app-routing.module';
-import { GameLobbyPageComponent } from './game-lobby-page/game-lobby-page.component';
 
 @NgModule({
   imports: [
@@ -14,7 +13,6 @@ import { GameLobbyPageComponent } from './game-lobby-page/game-lobby-page.compon
     FlexLayoutModule,
   ],
   declarations: [
-    GameLobbyPageComponent
   ],
   providers: [
     MqttService

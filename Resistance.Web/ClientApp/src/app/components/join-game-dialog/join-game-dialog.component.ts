@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LobbyService } from 'src/app/services/lobby.service';
-import { MatProgressButtonOptions } from 'mat-progress-buttons';
+import { Router } from '@angular/router';
 
 export interface JoinGameDialogData {
   gameCode: string;
@@ -15,29 +15,21 @@ export interface JoinGameDialogData {
 })
 export class JoinGameDialogComponent {
 
-  // Button Options
-  joinBtnOptions: MatProgressButtonOptions = {
-    active: false,
-    text: 'Join',
-    spinnerSize: 19,
-    raised: false,
-    stroked: false,
-    buttonColor: 'primary',
-    spinnerColor: 'accent',
-    fullWidth: false,
-    disabled: false,
-    mode: 'indeterminate'
-  };
-
   public name: string;
+  public isJoining: boolean;
 
   constructor(
+    private router: Router,
     private lobbyService: LobbyService,
     public dialogRef: MatDialogRef<JoinGameDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: JoinGameDialogData) { }
 
   onJoinClick(): void {
-    this.joinBtnOptions.active = true;
+    this.isJoining = true;
     this.lobbyService.joinGame(this.data.gameCode, this.name)
+    .subscribe(() => {
+      this.isJoining = false;
+      this.dialogRef.close();
+    });
   }
 }

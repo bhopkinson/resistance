@@ -4,7 +4,7 @@
       <mat-card-title>
         {{gameCode}}
         <span class="app-game-card-player-count">
-          ({{getPlayerCountText() | async}})
+          ({{players | async | playercount}})
         </span>
       </mat-card-title>
     </mat-card-header>
