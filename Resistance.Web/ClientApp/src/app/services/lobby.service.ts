@@ -27,7 +27,8 @@ export class LobbyService {
         var httpOptions = {
           headers: new HttpHeaders({
               'Content-Type': 'application/json'
-          })
+          }),
+          responseType: 'text' as 'json'
         };
         return this.http.post<string>(`api/game/${gameCode}/join`, JSON.stringify(name), httpOptions)
             .pipe(

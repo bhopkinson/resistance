@@ -20,7 +20,7 @@ namespace Resistance.Web.Services
 
         public string GenerateToken(string gameCode, Guid playerId)
         {
-            var bytes = GetKeyBytes(gameCode);
+            var bytes = GetKeyBytesForGame(gameCode);
             var securityKey = new SymmetricSecurityKey(bytes);
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
             var header = new JwtHeader(credentials);
@@ -35,7 +35,7 @@ namespace Resistance.Web.Services
             return tokenString;
         }
 
-        private byte[] GetKeyBytes(string gameCode) =>
+        private byte[] GetKeyBytesForGame(string gameCode) =>
             _gameManager.GetGame(gameCode).Key;
     }
 }

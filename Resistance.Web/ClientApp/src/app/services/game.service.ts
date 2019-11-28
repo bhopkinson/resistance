@@ -10,6 +10,8 @@ import { Role } from '../models/Role';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import * as jwt_decode from 'jwt-decode';
 import { map } from 'rxjs/internal/operators/map';
+import { tap } from 'rxjs/internal/operators/tap';
+import { filter, defaultIfEmpty } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -54,12 +56,12 @@ export class GameService {
 
     public getGameCode(): Observable<string> {
       return this._token
-        .pipe(map(token => jwt_decode(token)['game_code']));
+        .pipe(map(token => token ? jwt_decode(token)['game_code'] : null));
     }
 
     public getPlayerId(): Observable<string> {
       return this._token
-        .pipe(map(token => jwt_decode(token)['player_id']));
+        .pipe(map(token => token ? jwt_decode(token)['player_id'] : null));
     }
 
     // public JoinGame(initials: string) {
