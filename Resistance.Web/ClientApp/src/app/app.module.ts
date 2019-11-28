@@ -9,6 +9,7 @@ import { LobbyModule } from './pages/lobby';
 import { MqttModule, IMqttServiceOptions } from 'ngx-mqtt';
 import { HttpClientModule } from '@angular/common/http';
 import { GameModule } from './pages/game';
+import { StorageModule } from '@ngx-pwa/local-storage';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: "localhost",
@@ -30,7 +31,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     LobbyModule,
     GameModule,
     HttpClientModule,
-    MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
+    StorageModule.forRoot({ IDBNoWrap: true })
   ],
   providers: [],
   bootstrap: [AppComponent],

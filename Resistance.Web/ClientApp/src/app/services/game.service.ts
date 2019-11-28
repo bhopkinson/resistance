@@ -7,6 +7,7 @@ import { GameBoard } from '../models/GameBoard';
 import { Character } from '../models/Character';
 import { Team } from '../models/Team';
 import { Role } from '../models/Role';
+import { StorageMap } from '@ngx-pwa/local-storage';
 
 @Injectable({
   providedIn: 'root'
@@ -35,13 +36,22 @@ export class GameService {
 
     public playerId: Observable<string>;
 
-    constructor() {
+    constructor(
+      private storage: StorageMap) {
+
       this.playerId = this._playerId;
+
+      this.storage.get("playerId", { type: 'string' }).subscribe({
+        next: (playerId) => {
+          this._playerId.next(playerId as string);
+        }
+      });
+
     }
 
     public setPlayerId(id: string): void {
       this._playerId.next(id);
-      this._playerId.complete();
+      this.storage.set("playerId", id).subscribe({next: () => { }});
     }
 
     // public JoinGame(initials: string) {
