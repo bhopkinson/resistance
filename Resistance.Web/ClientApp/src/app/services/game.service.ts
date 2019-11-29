@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Subject, ReplaySubject, BehaviorSubject, Observable } from 'rxjs';
+import { Subject, ReplaySubject, BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { PlayerDetails } from '../models/PlayerDetails';
 import { GamePlayer } from '../models/GamePlayer';
@@ -12,11 +12,12 @@ import * as jwt_decode from 'jwt-decode';
 import { map } from 'rxjs/internal/operators/map';
 import { tap } from 'rxjs/internal/operators/tap';
 import { filter, defaultIfEmpty } from 'rxjs/operators';
+import { AppMqttService } from './app-mqtt.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GameService {
+export class GameService implements OnDestroy {
     private _messageReceived = new Subject();
     private _connectionEstablished = new Subject<Boolean>(); 
     private _countdown = new Subject<boolean>();
@@ -36,17 +37,36 @@ export class GameService {
     public initials: string;
     public showLeaderScript = this._showLeaderScript.asObservable();
 
+    private _tokenSubscription: Subscription;
     private _token = new BehaviorSubject<string>(null);
+    private _gameCode = new BehaviorSubject<string>(null);
+    private _playerId = new BehaviorSubject<string>(null);
+
+    public gameCode: Observable<string>;
+    public playerId: Observable<string>;
 
     constructor(
+      private mqtt: AppMqttService,
       private storage: StorageMap) {
 
-      this.storage.get("token", { type: 'string' }).subscribe({
-        next: (token) => {
-          this._token.next(token as string);
-        }
-      });
+      this.gameCode = this._gameCode;
+      this.playerId = this._playerId;
 
+      this._tokenSubscription = this._token.pipe(
+          map(token => token ? jwt_decode(token) : null),
+          tap(token => this._gameCode.next(token ? token['game_code'] : null)),
+          tap(token => this._playerId.next(token ? token['player_id'] : null))
+        ).subscribe({next: () => { } });
+
+        this.storage.get("token", { type: 'string' }).subscribe({
+          next: (token) => {
+            this._token.next(token as string);
+          }
+        });
+    }
+
+    ngOnDestroy(){
+      this._tokenSubscription.unsubscribe();
     }
 
     public storeToken(token: string): void {
@@ -54,14 +74,20 @@ export class GameService {
       this.storage.set("token", token).subscribe({next: () => { }});
     }
 
-    public getGameCode(): Observable<string> {
-      return this._token
-        .pipe(map(token => token ? jwt_decode(token)['game_code'] : null));
-    }
+    // public getGameCode(): Observable<string> {
+    //   return this._token
+    //     .pipe(map(token => token ? jwt_decode(token)['game_code'] : null));
+    // }
 
-    public getPlayerId(): Observable<string> {
-      return this._token
-        .pipe(map(token => token ? jwt_decode(token)['player_id'] : null));
+    // public getPlayerId(): Observable<string> {
+    //   return this._token
+    //     .pipe(map(token => token ? jwt_decode(token)['player_id'] : null));
+    // }
+
+    public playerReady(ready: boolean): void {
+      this.mqtt
+        .publish(`game/${this._gameCode.value}/${this._playerId.value}/ready/command`, ready)
+        .subscribe({ next: () => {} });
     }
 
     // public JoinGame(initials: string) {

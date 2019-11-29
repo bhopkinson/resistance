@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, HostBinding, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Player } from '../../models/Player';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { JoinGameDialogComponent } from '../join-game-dialog/join-game-dialog.component';
 import { LobbyService } from 'src/app/services/lobby.service';
@@ -12,12 +11,14 @@ import { LobbyService } from 'src/app/services/lobby.service';
   styleUrls: ['./game-card.component.scss'],
   providers: [LobbyService]
 })
-export class GameCardComponent implements OnInit {
+export class GameCardComponent implements OnInit, OnDestroy {
 
   @Input() gameCode: string;
 
   public players: Observable<Player[]>;
-  public player: Observable<Player>;
+  public player = new BehaviorSubject<Player>(null);
+
+  private _playerReadySubscription: Subscription;
 
   constructor(
     public dialog: MatDialog,
@@ -25,7 +26,12 @@ export class GameCardComponent implements OnInit {
 
   ngOnInit() {
     this.players = this.lobbyService.getGamePlayers(this.gameCode);
-    this.player = this.lobbyService.getCurrentPlayer(this.gameCode);
+    this._playerReadySubscription = this.lobbyService.getCurrentPlayer(this.gameCode)
+      .subscribe({ next: (player) => this.player.next(player) });
+  }
+
+  ngOnDestroy() {
+    this._playerReadySubscription.unsubscribe();
   }
 
   openJoinGameDialog(): void {
@@ -35,9 +41,11 @@ export class GameCardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-      }
     });
+  }
+
+  readyClick(): void {
+    this.lobbyService.playerReady(!this.player.value.IsReady);
   }
 
 }

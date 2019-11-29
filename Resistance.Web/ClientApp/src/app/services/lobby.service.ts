@@ -47,9 +47,13 @@ export class LobbyService {
     public getCurrentPlayer(gameCode: string): Observable<Player> {
         return combineLatest(
             this.getGamePlayers(gameCode),
-            this.gameService.getPlayerId()
+            this.gameService.playerId
         ).pipe(
             map(([players, id]) => players.find(player => player.Id === id))
         );
+    }
+
+    public playerReady(ready: boolean): void {
+        this.gameService.playerReady(ready);
     }
 }

@@ -7,7 +7,7 @@
           ({{players | async | playercount}})
         </span>
       </mat-card-title>
-      <button mat-fab (click)="openJoinGameDialog()"><mat-icon>add</mat-icon></button>
+      <button *ngIf="!(player | async)" mat-fab (click)="openJoinGameDialog()"><mat-icon>add</mat-icon></button>
     </mat-card-header>
     <mat-card-content>
       <div
@@ -23,6 +23,7 @@
       </div>
     </mat-card-content>
     <mat-card-actions *ngIf="player | async">
-      <button mat-flat-button>Leave</button>
+      <button mat-flat-button color="accent">Leave</button>
+      <button mat-flat-button color="primary" (click)="readyClick()">I'm {{(player | async).isReady ? 'not' : ''}} ready</button>
     </mat-card-actions>
   </mat-card>

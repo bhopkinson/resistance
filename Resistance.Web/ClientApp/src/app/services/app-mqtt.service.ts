@@ -4,7 +4,7 @@ import {
     MqttService
   } from 'ngx-mqtt';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { decode } from '@msgpack/msgpack';
 
 @Injectable({providedIn: 'root'})
@@ -21,6 +21,10 @@ export class AppMqttService {
         map((message: IMqttMessage) => decode(message.payload)),
         //tap((object: unknown) => console.log(object))
       );
+  }
+
+  public publish(topic: string, payload: any): Observable<void> {
+    return this.mqtt.publish(topic, JSON.stringify(payload));
   }
 
 }
