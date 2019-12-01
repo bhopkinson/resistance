@@ -11,12 +11,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { GameModule } from './pages/game';
 import { StorageModule } from '@ngx-pwa/local-storage';
 
-export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
+const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: "localhost",
   port: 5000,
   path: '/mqtt',
   protocol: "ws",
-  username: "lobby",
+  username: "resistance",
 };
 
 @NgModule({

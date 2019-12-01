@@ -13,6 +13,7 @@ import { map } from 'rxjs/internal/operators/map';
 import { tap } from 'rxjs/internal/operators/tap';
 import { filter, defaultIfEmpty } from 'rxjs/operators';
 import { AppMqttService } from './app-mqtt.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -46,13 +47,16 @@ export class GameService implements OnDestroy {
     public playerId: Observable<string>;
 
     constructor(
+      private http: HttpClient,
       private mqtt: AppMqttService,
-      private storage: StorageMap) {
+      private storage: StorageMap,
+      private router: Router) {
 
       this.gameCode = this._gameCode;
       this.playerId = this._playerId;
 
       this._tokenSubscription = this._token.pipe(
+          tap(token => this.mqtt.reconnect(token)), // whenever we get a new token, reconnect to mqtt using it
           map(token => token ? jwt_decode(token) : null),
           tap(token => this._gameCode.next(token ? token['game_code'] : null)),
           tap(token => this._playerId.next(token ? token['player_id'] : null))
@@ -60,7 +64,7 @@ export class GameService implements OnDestroy {
 
         this.storage.get("token", { type: 'string' }).subscribe({
           next: (token) => {
-            this._token.next(token as string);
+            this.validateToken(token as string);
           }
         });
     }
@@ -72,6 +76,23 @@ export class GameService implements OnDestroy {
     public storeToken(token: string): void {
       this._token.next(token);
       this.storage.set("token", token).subscribe({next: () => { }});
+    }
+
+    public validateToken(token: string): void {
+      var httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+        }),
+        responseType: 'text' as 'json'
+      };
+      this.http.post<boolean>(`api/game/validate-token`, JSON.stringify(token), httpOptions).subscribe(
+        {
+          complete: () => { this._token.next(token); },
+          error: () => { 
+            this.storage.delete("token").subscribe({next: () => { }});
+            this.router.navigate(["/"]); }
+        }
+      )
     }
 
     // public getGameCode(): Observable<string> {

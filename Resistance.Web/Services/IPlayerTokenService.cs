@@ -8,5 +8,6 @@ namespace Resistance.Web.Services
     public interface IPlayerTokenService
     {
         string GenerateToken(string gameCode, Guid playerId);
+        bool IsTokenValid(string token);
     }
 }

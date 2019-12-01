@@ -34,7 +34,8 @@ namespace Resistance.Web.Services
         }
 
         private byte[] GetBytes(dynamic @object) =>
-            MessagePackSerializer.Serialize(@object, ContractlessStandardResolver.Instance);
+            JsonSerializer.SerializeToUtf8Bytes(@object);
+            //MessagePackSerializer.Serialize(@object, ContractlessStandardResolver.Instance);
 
         private MqttApplicationMessage BuildMqttApplicationMessage(string topic, byte[] bytes) =>
             new MqttApplicationMessageBuilder()

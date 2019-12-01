@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Resistance.Web.Commands;
-using Resistance.Web.MediationModels;
 using SimpleMediator.Core;
 
 namespace Resistance.Web.Controllers
@@ -33,6 +28,14 @@ namespace Resistance.Web.Controllers
             {
                 GameCode = gameCode,
                 PlayerName = playerName
+            });
+
+        [HttpPost]
+        [Route("validate-token")]
+        public async Task ValidateToken([FromBody] string token) =>
+            await _mediator.HandleAsync(new ValidateTokenMessage
+            {
+                Token = token
             });
     }
 }
