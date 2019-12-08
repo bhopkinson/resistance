@@ -10,6 +10,7 @@ namespace Resistance.Web.Services.Mqtt
     {
         public async Task InterceptSubscriptionAsync(MqttSubscriptionInterceptorContext context)
         {
+            context.
             context.AcceptSubscription = true;
             await Task.CompletedTask;
         }

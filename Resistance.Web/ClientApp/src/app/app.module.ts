@@ -17,6 +17,7 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   path: '/mqtt',
   protocol: "ws",
   username: "resistance",
+  connectOnCreate: true
 };
 
 @NgModule({

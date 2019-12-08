@@ -20,7 +20,7 @@ namespace Resistance.Web.Services.Mqtt
             try
             {
                 if (context.Username == "resistance"
-                    && (string.IsNullOrEmpty(context.Password) || context.Password == "test"
+                    && (string.IsNullOrEmpty(context.Password)
                         || _playerTokenService.IsTokenValid(context.Password)))
                 {
                     context.ReasonCode = MqttConnectReasonCode.Success;
@@ -29,7 +29,7 @@ namespace Resistance.Web.Services.Mqtt
             catch
             {
                 // We currently don't worry what the exception was.
-                // Perhaps add logging or a more detailed message.
+                // TODO: Perhaps add logging or a more detailed message.
             }
             
             await Task.CompletedTask;
